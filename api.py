@@ -60,9 +60,9 @@ app.add_middleware(
     allow_headers=['*']
 )
 
-device = "cpu"
+device = "cuda"
 model_id = "CompVis/stable-diffusion-v1-4"
-pipe = StableDiffusionPipeline.from_pretrained(model_id, revision="fp16", torch_dtype=torch.float32, use_auth_token=auth_token)
+pipe = StableDiffusionPipeline.from_pretrained(model_id, revision="fp16", torch_dtype=torch.float16, use_auth_token=auth_token)
 pipe.to(device)
 
 @app.post("/generate-image/")
