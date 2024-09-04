@@ -1,7 +1,7 @@
-// src/components/Login.jsx
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { motion } from 'framer-motion';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -21,40 +21,56 @@ const Login = () => {
   };
 
   return (
-    <div className="relative min-h-screen flex items-center justify-center bg-cover bg-center"
-         style={{ backgroundImage: 'url(https://cdn.pixabay.com/photo/2024/06/10/15/05/flower-8820894_1280.png)' }}>
-      <div className="absolute inset-0 bg-black opacity-50"></div>
-      <div className="relative bg-black bg-opacity-75 p-8 rounded-lg shadow-lg max-w-md w-full transition-transform duration-1000 transform hover:scale-105 animate-fadeIn">
-        <h2 className="text-3xl font-bold text-white mb-6 text-center animate-fadeIn">Welcome Back</h2>
+    <motion.div
+      className="relative min-h-screen flex items-center justify-center bg-cover bg-center px-4 sm:px-6 lg:px-8"
+      style={{
+        backgroundImage: 'url(https://cdn.pixabay.com/photo/2024/06/10/15/05/flower-8820894_1280.png)',
+      }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      transition={{ duration: 1 }}
+    >
+      
+      <div
+        className="relative bg-black bg-opacity-80 p-8 rounded-2xl shadow-2xl max-w-md w-full transition-transform duration-1000 transform hover:scale-105"
+        style={{ animation: 'fadeIn 1s ease-in-out' }}
+      >
+        <h2 className="text-3xl font-bold text-white mb-6 text-center">
+          Welcome Back
+        </h2>
         <form onSubmit={handleLogin} className="flex flex-col space-y-4">
+          <label className="text-white font-semibold">Email</label>
           <input
             type="email"
-            placeholder="Email"
+            placeholder="Enter your email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             required
-            className="p-3 border border-gray-700 rounded-lg bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-transform duration-300"
+            aria-label="Email"
+            className="p-3 border border-gray-300 rounded-lg bg-gray-100 text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-transform duration-300"
           />
+          <label className="text-white font-semibold">Password</label>
           <input
             type="password"
-            placeholder="Password"
+            placeholder="Enter your password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             required
-            className="p-3 border border-gray-700 rounded-lg bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-transform duration-300"
+            aria-label="Password"
+            className="p-3 border border-gray-300 rounded-lg bg-gray-100 text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-transform duration-300"
           />
           <button
             type="submit"
-            className="bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-lg font-semibold shadow-md transition-transform duration-300 transform hover:scale-105"
+            className={`bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-lg font-semibold shadow-md transition-transform duration-300 transform hover:scale-105`}
           >
             Login
           </button>
         </form>
-        <p className="mt-6 text-sm text-gray-400 text-center animate-fadeIn">
+        <p className="mt-6 text-sm text-gray-600 text-center">
           Don't have an account? <a href="/signup" className="text-blue-500 hover:underline">Sign up</a>
         </p>
       </div>
-    </div>
+    </motion.div>
   );
 };
 
