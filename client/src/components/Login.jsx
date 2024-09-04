@@ -22,7 +22,7 @@ const Login = () => {
 
   return (
     <div className="relative min-h-screen flex items-center justify-center bg-cover bg-center"
-         style={{ backgroundImage: 'url(https://media.istockphoto.com/id/2012797971/photo/glitch-noise-static-television-vfx-pack-visual-video-effects-stripes-background-crt-tv-screen.jpg?s=2048x2048&w=is&k=20&c=Z-8noNh1cfe5MDtwjfACng9QWJ75uyondFcHLK2MbB0=)' }}>
+         style={{ backgroundImage: 'url(https://cdn.pixabay.com/photo/2024/06/10/15/05/flower-8820894_1280.png)' }}>
       <div className="absolute inset-0 bg-black opacity-50"></div>
       <div className="relative bg-black bg-opacity-75 p-8 rounded-lg shadow-lg max-w-md w-full transition-transform duration-1000 transform hover:scale-105 animate-fadeIn">
         <h2 className="text-3xl font-bold text-white mb-6 text-center animate-fadeIn">Welcome Back</h2>
