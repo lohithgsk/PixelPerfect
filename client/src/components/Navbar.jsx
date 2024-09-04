@@ -1,30 +1,30 @@
 // src/components/Navbar.jsx
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import { useNavigate } from "react-router-dom";
 
 const Navbar = () => {
   const navigate = useNavigate();
 
   const handleLoginClick = () => {
-    navigate('/login');
+    navigate("/login");
   };
 
   const handleLogoClick = () => {
-    navigate('/');
+    navigate("/");
   };
 
   const handleUploadClick = () => {
-    navigate('/upload');
+    navigate("/upload");
   };
 
   return (
-    <nav className="relative bg-gray-800 text-white flex justify-between items-center px-6 py-4 overflow-hidden transition-all duration-300 ease-in-out hover:bg-gray-700">
+    <nav className="relative bg-gray-800 text-white flex justify-between items-center px-6 py-3 overflow-hidden transition-all duration-300 ease-in-out hover:bg-gray-700">
       {/* Streak line effect */}
       <div className="absolute inset-0 flex justify-center items-center">
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-900 to-transparent opacity-20" />
         <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-transparent opacity-30" />
       </div>
-      
+
       <h1
         className="text-xl font-semibold cursor-pointer z-10 p-2 rounded-lg transition-colors duration-300 ease-in-out hover:text-black"
         onClick={handleLogoClick}
@@ -33,13 +33,13 @@ const Navbar = () => {
       </h1>
       <div className="flex space-x-4 z-10">
         <button
-          className="bg-blue-500 hover:bg-blue-600 text-white py-3 px-6 rounded-full shadow-md hover:shadow-lg transform transition-transform duration-300 ease-in-out hover:scale-105"
+          className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-6 rounded-full shadow-md hover:shadow-lg transform transition-transform duration-300 ease-in-out hover:scale-105"
           onClick={handleUploadClick}
         >
           Upload
         </button>
         <button
-          className="bg-blue-500 hover:bg-blue-600 text-white py-3 px-6 rounded-full shadow-md hover:shadow-lg transform transition-transform duration-300 ease-in-out hover:scale-105"
+          className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-6 rounded-full shadow-md hover:shadow-lg transform transition-transform duration-300 ease-in-out hover:scale-105"
           onClick={handleLoginClick}
         >
           Login
