@@ -1,4 +1,4 @@
-from fastapi import FastAPI, UploadFile, File, Form, HTTPException
+from fastapi import FastAPI, UploadFile, File, Form, Response, HTTPException
 from google.generativeai import configure, GenerativeModel, GenerationConfig
 from PIL import Image
 import io
@@ -71,7 +71,11 @@ async def generate_image(prompt: str = Form(...)):
         image = pipe(prompt, guidance_scale=8.5).images[0]
 
     image.save("testimage.png")
-    return {"out":"hello world"}
+    buffer = BytesIO()
+    image.save(buffer, format='PNG')
+    imgstr = base64.b64encode(buffer.getvalue())
+
+    return Response(content=imgstr, media_type='image/png')
     
 
 if __name__ == "__main__":
