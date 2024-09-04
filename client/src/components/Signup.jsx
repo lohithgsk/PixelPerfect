@@ -33,22 +33,22 @@ const Signup = () => {
     <motion.div
       className="relative min-h-screen flex items-center justify-center bg-cover bg-center px-4 sm:px-6 lg:px-8"
       style={{
-        backgroundImage: 'url(https://cdn.pixabay.com/photo/2024/06/10/15/05/flower-8820894_1280.png)',
+        backgroundImage: 'url(https://i.pinimg.com/originals/fc/fe/65/fcfe65272f02ca4ee988a7ed0e79c2d1.jpg)',
       }}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 1 }}
     >
-      <div className="absolute inset-0 bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 opacity-40"></div>
+      <div className="absolute inset-0  opacity-40"></div>
       <div
-        className="relative bg-white bg-opacity-80 p-8 rounded-2xl shadow-2xl max-w-md w-full transition-transform duration-1000 transform hover:scale-105"
+        className="relative h-full w-full bg-gray-800 bg-opacity-80 p-8 rounded-2xl shadow-2xl max-w-md transition-transform duration-1000 transform hover:scale-105 bg-clip-padding backdrop-filter backdrop-blur-sm border border-gray-100"
         style={{ animation: 'fadeIn 1s ease-in-out' }}
       >
-        <h2 className="text-3xl font-bold text-black mb-6 text-center">
+        <h2 className=" font-Handjet text-3xl font-bold text-white mb-6 text-center">
           Sign Up
         </h2>
         <form onSubmit={handleSignup} className="flex flex-col space-y-4">
-          <label className="text-gray-700 font-semibold">Name</label>
+          <label className="text-white font-semibold">Name</label>
           <input
             type="text"
             placeholder="Enter your name"
@@ -57,7 +57,7 @@ const Signup = () => {
             required
             className="p-3 border border-gray-300 rounded-lg bg-gray-100 text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-transform duration-300"
           />
-          <label className="text-gray-700 font-semibold">Email</label>
+          <label className="text-white font-semibold">Email</label>
           <input
             type="email"
             placeholder="Enter your email"
@@ -66,7 +66,7 @@ const Signup = () => {
             required
             className="p-3 border border-gray-300 rounded-lg bg-gray-100 text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-transform duration-300"
           />
-          <label className="text-gray-700 font-semibold">Password</label>
+          <label className="text-white font-semibold">Password</label>
           <input
             type="password"
             placeholder="Enter your password"
@@ -75,7 +75,7 @@ const Signup = () => {
             required
             className="p-3 border border-gray-300 rounded-lg bg-gray-100 text-gray-800 placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-transform duration-300"
           />
-          <label className="text-gray-700 font-semibold">Confirm Password</label>
+          <label className="text-white font-semibold">Confirm Password</label>
           <input
             type="password"
             placeholder="Confirm your password"
@@ -86,7 +86,7 @@ const Signup = () => {
           />
           <button
             type="submit"
-            className={`bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-lg font-semibold shadow-md transition-transform duration-300 transform hover:scale-105 ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
+            className={`bg-black hover:bg-blue-600 text-white py-3 rounded-lg font-semibold shadow-md transition-transform duration-300 transform hover:scale-105 ${isLoading ? 'opacity-50 cursor-not-allowed' : ''}`}
             disabled={isLoading}
           >
             {isLoading ? 'Signing Up...' : 'Sign Up'}

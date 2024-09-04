@@ -24,7 +24,7 @@ const Login = () => {
     <motion.div
       className="relative min-h-screen flex items-center justify-center bg-cover bg-center px-4 sm:px-6 lg:px-8"
       style={{
-        backgroundImage: 'url(https://cdn.pixabay.com/photo/2024/06/10/15/05/flower-8820894_1280.png)',
+        backgroundImage: 'url(https://i.pinimg.com/originals/fc/fe/65/fcfe65272f02ca4ee988a7ed0e79c2d1.jpg)',
       }}
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
@@ -32,7 +32,7 @@ const Login = () => {
     >
       
       <div
-        className="relative bg-black bg-opacity-80 p-8 rounded-2xl shadow-2xl max-w-md w-full transition-transform duration-1000 transform hover:scale-105"
+        className="relative h-full w-full bg-gray-800 bg-opacity-80 p-8 rounded-2xl shadow-2xl max-w-md transition-transform duration-1000 transform hover:scale-105 bg-clip-padding backdrop-filter backdrop-blur-sm border border-gray-100"
         style={{ animation: 'fadeIn 1s ease-in-out' }}
       >
         <h2 className="text-3xl font-bold text-white mb-6 text-center">
@@ -61,12 +61,12 @@ const Login = () => {
           />
           <button
             type="submit"
-            className={`bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-lg font-semibold shadow-md transition-transform duration-300 transform hover:scale-105`}
+            className={`bg-black hover:bg-blue-600 text-white py-3 rounded-lg font-semibold shadow-md transition-transform duration-300 transform hover:scale-105`}
           >
             Login
           </button>
         </form>
-        <p className="mt-6 text-sm text-gray-600 text-center">
+        <p className="mt-6 text-sm text-gray-300 text-center">
           Don't have an account? <a href="/signup" className="text-blue-500 hover:underline">Sign up</a>
         </p>
       </div>
