@@ -9,6 +9,7 @@ import Login from './components/Login';
 import Signup from './components/Signup';
 import './index.css';
 import axios from 'axios';
+import UploadPage from './pages/UploadPage';
 
 const App = () => {
   const [results, setResults] = useState([]);
@@ -29,11 +30,13 @@ const App = () => {
         <Routes>
           <Route path="/" element={
             <>
-              <UploadSection />
               <QuerySection onQuery={handleQuery} />
               <ResultsSection results={results} />
             </>
           } />
+          <Route path='/upload' element={
+            <UploadPage />
+          }></Route>
           <Route path="/login" element={<Login />} />
           <Route path="/signup" element={<Signup />} />
         </Routes>

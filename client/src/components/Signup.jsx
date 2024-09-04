@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import '../index.css';
 
 const Signup = () => {
   const [name, setName] = useState('');
@@ -22,22 +21,23 @@ const Signup = () => {
     try {
       await axios.post('/api/signup', { name, email, password });
       alert('Signup successful! Please log in.');
-      navigate('/login'); // Redirect to the login page after successful signup
+      navigate('/login');
     } catch (error) {
       alert('Signup failed. Please try again.');
     }
   };
 
   return (
-    <div className="auth-container">
-      <h2>Sign Up</h2>
-      <form onSubmit={handleSignup}>
+    <div className="bg-white p-6 rounded-lg shadow-md max-w-md mx-auto my-10">
+      <h2 className="text-2xl font-semibold mb-4">Sign Up</h2>
+      <form onSubmit={handleSignup} className="flex flex-col">
         <input
           type="text"
           placeholder="Name"
           value={name}
           onChange={(e) => setName(e.target.value)}
           required
+          className="p-2 mb-3 border border-gray-300 rounded"
         />
         <input
           type="email"
@@ -45,6 +45,7 @@ const Signup = () => {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
+          className="p-2 mb-3 border border-gray-300 rounded"
         />
         <input
           type="password"
@@ -52,6 +53,7 @@ const Signup = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
+          className="p-2 mb-3 border border-gray-300 rounded"
         />
         <input
           type="password"
@@ -59,11 +61,14 @@ const Signup = () => {
           value={confirmPassword}
           onChange={(e) => setConfirmPassword(e.target.value)}
           required
+          className="p-2 mb-4 border border-gray-300 rounded"
         />
-        <button type="submit">Sign Up</button>
-        <p>
-          Already have an account? <a href="/login">Log in</a>
-        </p>
+        <button
+          type="submit"
+          className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
+        >
+          Sign Up
+        </button>
       </form>
     </div>
   );

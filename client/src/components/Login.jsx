@@ -2,7 +2,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import '../index.css';
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -15,23 +14,23 @@ const Login = () => {
     try {
       const response = await axios.post('/api/login', { email, password });
       alert('Login successful!');
-      // Assuming token or user data is returned and stored
-      navigate('/'); // Redirect to the main page after successful login
+      navigate('/');
     } catch (error) {
       alert('Login failed. Please check your credentials.');
     }
   };
 
   return (
-    <div className="auth-container">
-      <h2>Login</h2>
-      <form onSubmit={handleLogin}>
+    <div className="bg-white p-6 rounded-lg shadow-md max-w-md mx-auto my-10">
+      <h2 className="text-2xl font-semibold mb-4">Login</h2>
+      <form onSubmit={handleLogin} className="flex flex-col">
         <input
           type="email"
           placeholder="Email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           required
+          className="p-2 mb-3 border border-gray-300 rounded"
         />
         <input
           type="password"
@@ -39,10 +38,16 @@ const Login = () => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
           required
+          className="p-2 mb-4 border border-gray-300 rounded"
         />
-        <button type="submit">Login</button>
-        <p>
-          Don't have an account? <a href="/signup">Sign up</a>
+        <button
+          type="submit"
+          className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
+        >
+          Login
+        </button>
+        <p className="mt-4 text-sm text-gray-600">
+          Don't have an account? <a href="/signup" className="text-blue-500">Sign up</a>
         </p>
       </form>
     </div>
