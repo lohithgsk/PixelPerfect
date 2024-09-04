@@ -43,6 +43,12 @@ const Navbar = () => {
           Upload
         </button>
         <button
+          className="bg-blue-500 hover:bg-blue-600 text-white ml-1 mr-1 py-2 px-4 rounded-full shadow-md hover:shadow-lg transform transition-transform duration-300 ease-in-out hover:scale-105 text-sm"
+          onClick={handleGenerate}
+        >
+          Generate
+        </button>
+        <button
           className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-full shadow-md hover:shadow-lg transform transition-transform duration-300 ease-in-out hover:scale-105 text-sm"
           onClick={handleLoginClick}
         >
