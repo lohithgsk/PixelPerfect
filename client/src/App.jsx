@@ -32,7 +32,7 @@ const App = () => {
   return (
     <Router>
       <div className="App">
-        {location.pathname != "/login" && <Navbar />}
+        {location.pathname !== "/login" && <Navbar />}
         <Routes>
           <Route
             path="/"
