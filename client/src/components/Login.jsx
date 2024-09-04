@@ -21,35 +21,39 @@ const Login = () => {
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg shadow-md max-w-md mx-auto my-10">
-      <h2 className="text-2xl font-semibold mb-4">Login</h2>
-      <form onSubmit={handleLogin} className="flex flex-col">
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-          className="p-2 mb-3 border border-gray-300 rounded"
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-          className="p-2 mb-4 border border-gray-300 rounded"
-        />
-        <button
-          type="submit"
-          className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
-        >
-          Login
-        </button>
-        <p className="mt-4 text-sm text-gray-600">
-          Don't have an account? <a href="/signup" className="text-blue-500">Sign up</a>
+    <div className="relative min-h-screen flex items-center justify-center bg-cover bg-center"
+         style={{ backgroundImage: 'url(https://media.istockphoto.com/id/2012797971/photo/glitch-noise-static-television-vfx-pack-visual-video-effects-stripes-background-crt-tv-screen.jpg?s=2048x2048&w=is&k=20&c=Z-8noNh1cfe5MDtwjfACng9QWJ75uyondFcHLK2MbB0=)' }}>
+      <div className="absolute inset-0 bg-black opacity-50"></div>
+      <div className="relative bg-black bg-opacity-75 p-8 rounded-lg shadow-lg max-w-md w-full transition-transform duration-1000 transform hover:scale-105 animate-fadeIn">
+        <h2 className="text-3xl font-bold text-white mb-6 text-center animate-fadeIn">Welcome Back</h2>
+        <form onSubmit={handleLogin} className="flex flex-col space-y-4">
+          <input
+            type="email"
+            placeholder="Email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            required
+            className="p-3 border border-gray-700 rounded-lg bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-transform duration-300"
+          />
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            required
+            className="p-3 border border-gray-700 rounded-lg bg-gray-800 text-white placeholder-gray-400 focus:outline-none focus:border-blue-500 transition-transform duration-300"
+          />
+          <button
+            type="submit"
+            className="bg-blue-500 hover:bg-blue-600 text-white py-3 rounded-lg font-semibold shadow-md transition-transform duration-300 transform hover:scale-105"
+          >
+            Login
+          </button>
+        </form>
+        <p className="mt-6 text-sm text-gray-400 text-center animate-fadeIn">
+          Don't have an account? <a href="/signup" className="text-blue-500 hover:underline">Sign up</a>
         </p>
-      </form>
+      </div>
     </div>
   );
 };
