@@ -10,14 +10,19 @@ import {
   Text,
   Heading,
   Flex,
+  SkeletonText,
+  SkeletonCircle,
 } from "@chakra-ui/react";
 
 const UploadSection = () => {
   const [selectedFile, setSelectedFile] = useState(null);
   const [summary, setSummary] = useState("");
   const [caption, setCaption] = useState("");
+  const [loadingSummary, setLoadingSummary] = useState(false);
+  const [loadingCaption, setLoadingCaption] = useState(false);
   const [enhance, setEnhance] = useState(false);
   const [error, setError] = useState("");
+
   const handleFileChange = (e) => {
     const file = e.target.files[0];
 
@@ -58,6 +63,8 @@ const UploadSection = () => {
     formData.append("file", selectedFile);
     formData.append("enhance", enhance);
 
+    setLoadingSummary(true); // Set loading state to true
+
     try {
       const response = await axios.post(
         "http://localhost:8000/generate-summary/",
@@ -80,6 +87,8 @@ const UploadSection = () => {
         "Error generating summary: " +
           (error.response?.data?.message || "Server error")
       );
+    } finally {
+      setLoadingSummary(false); // Reset loading state
     }
   };
 
@@ -92,6 +101,8 @@ const UploadSection = () => {
     const formData = new FormData();
     formData.append("file", selectedFile);
     formData.append("enhance", enhance);
+
+    setLoadingCaption(true); // Set loading state to true
 
     try {
       const response = await axios.post(
@@ -115,55 +126,51 @@ const UploadSection = () => {
         "Error generating caption: " +
           (error.response?.data?.message || "Server error")
       );
+    } finally {
+      setLoadingCaption(false); // Reset loading state
     }
   };
 
   return (
     <ChakraProvider>
-      <Container maxW="container.lg" py={10}>
+      <Container maxW="container.lg" p={5}>
         <Flex
-          direction={{ base: "column", md: "row" }}
-          bg="white"
+          direction={["column", "row"]}
           p={6}
+          bg="white"
           rounded="lg"
           shadow="md"
+          spacing={4}
+          align="center"
+          justify="space-between"
         >
-          {/* Left Section: Upload and Buttons */}
-          <Box flex="1" pr={{ md: 4 }} mb={{ base: 6, md: 0 }}>
+          {/* Left Section */}
+          <Box flex="1" pr={[0, 4]} mb={[4, 0]}>
             <Heading as="h2" size="lg" mb={4}>
               Upload Photo, Generate Summary or Caption
             </Heading>
 
-            <Input
-              type="file"
-              onChange={handleFileChange}
-              mb={4}
-              variant="outline"
-              size="sm"
-            />
+            <Input type="file" onChange={handleFileChange} mb={4} />
 
-            <Button
-              onClick={handleUpload}
-              colorScheme="blue"
-              width="full"
-              mb={4}
-            >
+            <Button colorScheme="blue" onClick={handleUpload} w="full" mb={4}>
               Upload
             </Button>
 
             <Button
-              onClick={handleGenerateSummary}
               colorScheme="yellow"
-              width="full"
+              onClick={handleGenerateSummary}
+              w="full"
               mb={4}
+              isLoading={loadingSummary}
             >
               Generate Summary
             </Button>
 
             <Button
-              onClick={handleGenerateCaption}
               colorScheme="green"
-              width="full"
+              onClick={handleGenerateCaption}
+              w="full"
+              isLoading={loadingCaption}
             >
               Generate Caption
             </Button>
@@ -171,63 +178,77 @@ const UploadSection = () => {
             {error && (
               <Box
                 mt={4}
-                p={2}
+                p={3}
                 border="1px"
                 borderColor="red.500"
-                bg="red.50"
                 color="red.500"
                 rounded="lg"
+                bg="red.50"
               >
                 {error}
               </Box>
             )}
           </Box>
 
-          <Box flex="1" pl={{ md: 4 }}>
+          {/* Right Section */}
+          <Box flex="1" pl={[0, 4]}>
             {selectedFile && (
-              <Image
-                src={URL.createObjectURL(selectedFile)}
-                alt="Selected"
-                maxW="full"
-                borderRadius="lg"
-                shadow="md"
-                mb={4}
-              />
-            )}
-
-            {summary && (
-              <Box
-                mt={6}
-                p={4}
-                border="1px"
-                borderColor="yellow.500"
-                bg="yellow.50"
-                rounded="lg"
-                shadow="md"
-              >
-                <Heading as="h3" size="md" mb={2}>
-                  Generated Summary:
-                </Heading>
-                <Text color="gray.700">{summary}</Text>
+              <Box mb={4}>
+                <Image
+                  src={URL.createObjectURL(selectedFile)}
+                  alt="Selected"
+                  maxW="full"
+                  h="auto"
+                  border="1px"
+                  borderColor="gray.300"
+                  rounded="lg"
+                  shadow="md"
+                />
               </Box>
             )}
 
-            {caption && (
-              <Box
-                mt={6}
-                p={4}
-                border="1px"
-                borderColor="green.500"
-                bg="green.50"
-                rounded="lg"
-                shadow="md"
-              >
-                <Heading as="h3" size="md" mb={2}>
-                  Generated Caption:
-                </Heading>
-                <Text color="gray.700">{caption}</Text>
-              </Box>
-            )}
+            {/* Summary Section */}
+            <Box
+              mt={6}
+              p={4}
+              border="1px"
+              borderColor="yellow.500"
+              rounded="lg"
+              bg="yellow.50"
+              shadow="md"
+            >
+              <Heading as="h3" size="md" mb={2}>
+                Generated Summary:
+              </Heading>
+              {loadingSummary ? (
+                <SkeletonText noOfLines={4} spacing="4" />
+              ) : (
+                <Text>{summary || "No summary available yet."}</Text>
+              )}
+            </Box>
+
+            {/* Caption Section */}
+            <Box
+              mt={6}
+              p={4}
+              border="1px"
+              borderColor="green.500"
+              rounded="lg"
+              bg="green.50"
+              shadow="md"
+            >
+              <Heading as="h3" size="md" mb={2}>
+                Generated Caption:
+              </Heading>
+              {loadingCaption ? (
+                <>
+                  <SkeletonCircle size="12" />
+                  <SkeletonText noOfLines={2} spacing="4" mt={4} />
+                </>
+              ) : (
+                <Text>{caption || "No caption available yet."}</Text>
+              )}
+            </Box>
           </Box>
         </Flex>
       </Container>
