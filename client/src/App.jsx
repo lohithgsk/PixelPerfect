@@ -16,23 +16,10 @@ import "./index.css";
 import axios from "axios";
 import UploadPage from "./pages/UploadPage";
 import ImageGeneration from "./pages/ImageGeneration";
-import { gapi } from 'gapi-script';
 
-const clientId = 478980045480-k81kmkdfa19emp9btc9kq230p1k605ha.apps.googleusercontent.com
 
 const App = () => {
   const [results, setResults] = useState([]);
-
-
-  useEffect(() => {
-    function start() {
-      gapi.client.init({
-        clientId: clientId,
-        scope: ""
-      })
-    };
-    gapi.load('client:auth2', start);
-  });
 
   const handleQuery = async (query) => {
     try {
