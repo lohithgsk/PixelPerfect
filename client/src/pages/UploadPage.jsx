@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
+import { ChakraProvider, Container, Box, Button, Input, Image, Text, Heading, Flex } from "@chakra-ui/react";
+
 
 const UploadSection = () => {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -107,79 +109,92 @@ const UploadSection = () => {
     }
   };
 
-  return (
-    <div className="bg-white p-6 rounded-lg shadow-md my-6 max-w-md mx-auto">
-      <h2 className="text-2xl font-semibold mb-4">
-        Upload Photo, Generate Summary or Caption
-      </h2>
-
-      <input
-        type="file"
-        onChange={handleFileChange}
-        className="mb-4 block w-full text-sm text-gray-500 border border-gray-300 rounded-lg cursor-pointer"
-      />
-
-      {selectedFile && (
-        <div className="mt-4">
-          <img
-            src={URL.createObjectURL(selectedFile)}
-            alt="Selected"
-            className="max-w-full h-auto border border-gray-300 rounded-lg shadow-md"
+    return (
+      <ChakraProvider>
+    <Container maxW="container.lg" py={10}>
+      <Flex direction={{ base: "column", md: "row" }} bg="white" p={6} rounded="lg" shadow="md">
+        {/* Left Section: Upload and Buttons */}
+        <Box flex="1" pr={{ md: 4 }} mb={{ base: 6, md: 0 }}>
+          <Heading as="h2" size="lg" mb={4}>
+            Upload Photo, Generate Summary or Caption
+          </Heading>
+          
+          <Input
+            type="file"
+            onChange={handleFileChange}
+            mb={4}
+            variant="outline"
+            size="sm"
           />
-        </div>
-      )}
+          
+          <Button
+            onClick={handleUpload}
+            colorScheme="blue"
+            width="full"
+            mb={4}
+          >
+            Upload
+          </Button>
 
-      <label className="flex items-center mb-4">
-        <input
-          type="checkbox"
-          checked={enhance}
-          onChange={(e) => setEnhance(e.target.checked)}
-          className="mr-2"
-        />
-        Enhance Photo
-      </label>
+          <Button
+            onClick={handleGenerateSummary}
+            colorScheme="yellow"
+            width="full"
+            mb={4}
+          >
+            Generate Summary
+          </Button>
 
-      <button
-        onClick={handleUpload}
-        className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded mb-4 w-full"
-      >
-        Upload
-      </button>
+          <Button
+            onClick={handleGenerateCaption}
+            colorScheme="green"
+            width="full"
+          >
+            Generate Caption
+          </Button>
 
-      <button
-        onClick={handleGenerateSummary}
-        className="bg-yellow-500 hover:bg-yellow-600 text-white py-2 px-4 rounded mb-4 w-full"
-      >
-        Generate Summary
-      </button>
+          {error && (
+            <Box mt={4} p={2} border="1px" borderColor="red.500" bg="red.50" color="red.500" rounded="lg">
+              {error}
+            </Box>
+          )}
+        </Box>
 
-      <button
-        onClick={handleGenerateCaption}
-        className="bg-green-500 hover:bg-green-600 text-white py-2 px-4 rounded w-full"
-      >
-        Generate Caption
-      </button>
+        {/* Right Section: Image Preview, Summary, and Caption */}
+        <Box flex="1" pl={{ md: 4 }}>
+          {selectedFile && (
+            <Image
+              src={URL.createObjectURL(selectedFile)}
+              alt="Selected"
+              maxW="full"
+              borderRadius="lg"
+              shadow="md"
+              mb={4}
+            />
+          )}
 
-      {error && (
-        <div className="mt-4 p-2 border border-red-500 text-red-500 rounded-lg bg-red-50">
-          {error}
-        </div>
-      )}
-      {summary && (
-        <div className="mt-6 p-4 border border-yellow-500 rounded-lg bg-yellow-50 shadow-md">
-          <h3 className="text-lg font-semibold mb-2">Generated Summary:</h3>
-          <p className="text-gray-700">{summary}</p>
-        </div>
-      )}
+          {summary && (
+            <Box mt={6} p={4} border="1px" borderColor="yellow.500" bg="yellow.50" rounded="lg" shadow="md">
+              <Heading as="h3" size="md" mb={2}>
+                Generated Summary:
+              </Heading>
+              <Text color="gray.700">{summary}</Text>
+            </Box>
+          )}
 
-      {caption && (
-        <div className="mt-6 p-4 border border-green-500 rounded-lg bg-green-50 shadow-md">
-          <h3 className="text-lg font-semibold mb-2">Generated Caption:</h3>
-          <p className="text-gray-700">{caption}</p>
-        </div>
-      )}
-    </div>
-  );
-};
+          {caption && (
+            <Box mt={6} p={4} border="1px" borderColor="green.500" bg="green.50" rounded="lg" shadow="md">
+              <Heading as="h3" size="md" mb={2}>
+                Generated Caption:
+              </Heading>
+              <Text color="gray.700">{caption}</Text>
+            </Box>
+          )}
+        </Box>
+      </Flex>
+    </Container>
+  </ChakraProvider>
+    );
+  };
 
 export default UploadSection;
