@@ -18,12 +18,12 @@ import { useState } from "react";
 const ImageGeneration = () => {
   const [image, setImage] = useState();
   const [prompt, setPrompt] = useState();
-  const [loading, setLoading] = useState(false);
+  const [loadingImage, setLoadingImage] = useState(false);
+  const [loadingCaption, setLoadingCaption] = useState(false);
   const [summary, setSummary] = useState("");
   const [caption, setCaption] = useState("");
   const [generatedImage, setGeneratedImage] = useState(); // State to hold the generated image
   const [file, setFile] = useState(null); // State for file upload
-  const [enhance, setEnhance] = useState(false); // State for enhancement checkbox
   const [error, setError] = useState(""); // State for error handling
 
   const generate = async (prompt) => {
@@ -32,33 +32,17 @@ const ImageGeneration = () => {
       return;
     }
     try {
-      setLoading(true);
+      setLoadingImage(true);
       const result = await axios.post(
         `http://localhost:8000/generate-image/`,
         new URLSearchParams({ prompt })
       );
       setGeneratedImage(result.data);
-      setLoading(false);
+      setLoadingImage(false);
     } catch (error) {
       console.error("Error generating image:", error);
-      setLoading(false);
+      setLoadingImage(false);
     }
-  };
-
-  const handleFileChange = (e) => {
-    const file = e.target.files[0];
-    if (file && !file.type.startsWith("image/")) {
-      setError("Please upload a valid image file.");
-      setFile(null);
-      return;
-    }
-    if (file && file.size > 2 * 1024 * 1024) {
-      setError("File size should not exceed 2 MB.");
-      setFile(null);
-      return;
-    }
-    setFile(file);
-    setError("");
   };
 
   const handleGenerateSummary = async () => {
@@ -75,9 +59,9 @@ const ImageGeneration = () => {
       const blob = await response.blob();
       formData.append("file", blob, "generated_image.png");
     }
-    formData.append("enhance", enhance);
 
     try {
+      setLoadingCaption(true);
       const result = await axios.post(
         "http://localhost:8000/generate-summary/",
         formData,
@@ -88,11 +72,13 @@ const ImageGeneration = () => {
         }
       );
       setSummary(result.data.summary);
+      setLoadingCaption(false);
     } catch (error) {
       setError(
         "Error generating summary: " +
           (error.response?.data?.message || "Server error")
       );
+      setLoadingCaption(false);
     }
   };
 
@@ -110,9 +96,9 @@ const ImageGeneration = () => {
       const blob = await response.blob();
       formData.append("file", blob, "generated_image.png");
     }
-    formData.append("enhance", enhance);
 
     try {
+      setLoadingCaption(true);
       const result = await axios.post(
         "http://localhost:8000/generate-caption/",
         formData,
@@ -123,11 +109,13 @@ const ImageGeneration = () => {
         }
       );
       setCaption(result.data.caption);
+      setLoadingCaption(false);
     } catch (error) {
       setError(
         "Error generating caption: " +
           (error.response?.data?.message || "Server error")
       );
+      setLoadingCaption(false);
     }
   };
 
@@ -164,7 +152,7 @@ const ImageGeneration = () => {
           Max estimated time for generation: 45secs for all prompts
         </Text>
 
-        {loading ? (
+        {loadingImage ? (
           <Stack>
             <SkeletonCircle />
             <SkeletonText />
@@ -175,12 +163,6 @@ const ImageGeneration = () => {
             boxShadow="lg"
           />
         ) : null}
-
-        {error && (
-          <Text color="red.500" mt={4}>
-            {error}
-          </Text>
-        )}
 
         {generatedImage && (
           <>
@@ -199,6 +181,13 @@ const ImageGeneration = () => {
               Generate Caption
             </Button>
           </>
+        )}
+
+        {loadingCaption && (
+          <Stack mt={4}>
+            <SkeletonCircle />
+            <SkeletonText />
+          </Stack>
         )}
 
         {summary && (
