@@ -30,9 +30,8 @@ auth_token = os.getenv('auth_token')
 fire_creds = os.getenv('CREDS')
 bucket_url = os.getenv("BUCKET")
 
-# Initializing firebase
 cred = credentials.Certificate(fire_creds)
-initialize_app(cred, {'storageBucket': bucket_url}) # bucket to store images
+initialize_app(cred, {'storageBucket': bucket_url}) 
 db = firestore.client()
 
 configure(api_key=api_key)
@@ -150,7 +149,7 @@ app.add_middleware(
     allow_headers=['*']
 )
 
-device = "cuda"
+device = "cuda" if torch.cuda.is_available() else "cpu"
 model_id = "CompVis/stable-diffusion-v1-4"
 pipe = StableDiffusionPipeline.from_pretrained(model_id, revision="fp16", torch_dtype=torch.float16, use_auth_token=auth_token)
 pipe.to(device)
@@ -163,7 +162,7 @@ async def generate_image(prompt: str = Form(...)):
     image.save("testimage.png")
     buffer = BytesIO()
     image.save(buffer, format='PNG')
-    imgstr = base64.b64encode(buffer.getvalue())
+    imgstr = base64.b64encode(buffer.getvalue()).decode('utf-8')
 
     return Response(content=imgstr, media_type='image/png')
     

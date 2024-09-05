@@ -87,6 +87,7 @@ const ImageGeneration = () => {
           (error.response?.data?.message || "Server error")
       );
       setLoadingSummary(false);
+      setError("");
     }
   };
 
