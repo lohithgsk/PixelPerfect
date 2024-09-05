@@ -7,9 +7,7 @@ class ImageSearcher:
         self.model = model
 
     def check_image(self, user_input):
-        """
-        Searches for an image based on the user's input.
-        """
+
         generation_config = GenerationConfig(
             temperature=0.7,
             max_output_tokens=20
@@ -25,17 +23,14 @@ class ImageSearcher:
             summaries.append(doc_data['summary'])
             urls.append(doc_data['url'])
 
-        # Formulating the prompt for the model
         prompt = [
             f"I'm giving you a list of summaries for images, as well as an input by the user. Determine which image the user is talking about. Input = {user_input}, Summary = {summaries}. Your response should be True or False, and the summary number from the list of summaries I gave you, depending on whether the user is talking about that image or not."
         ]
 
-        # Generate response using the model
         response = self.model.generate_content(prompt, generation_config=generation_config)
         found = (response.text).split(', ')
         index = int(found[1][0])
 
-        # Return the appropriate URL or message
         if found[0] == "True":
             return urls[int(index - 1)]
         else:
