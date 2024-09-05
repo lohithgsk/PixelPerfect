@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { GoogleLogin } from '@react-oauth/google';
 
 const Signup = () => {
   const [name, setName] = useState('');
@@ -91,7 +92,15 @@ const Signup = () => {
           >
             {isLoading ? 'Signing Up...' : 'Sign Up'}
           </button>
-        </form>
+        </form><br></br>
+        <GoogleLogin
+          onSuccess={credentialResponse => {
+            console.log(credentialResponse);
+          }}
+          onError={() => {
+            console.log('Login Failed');
+          }}
+        />
       </div>
     </motion.div>
   );

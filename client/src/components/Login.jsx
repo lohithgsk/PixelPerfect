@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
 import { motion } from 'framer-motion';
+import { GoogleLogin } from '@react-oauth/google';
+
+const clientId = "478980045480-k81kmkdfa19emp9btc9kq230p1k605ha.apps.googleusercontent.com"
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -19,6 +22,14 @@ const Login = () => {
       alert('Login failed. Please check your credentials.');
     }
   };
+
+  const onSuccess = (res) => {
+    console.log("LOGIN SUCCESS! Current user: ", res.profileObj)
+  }
+
+  const onFailure = (res) => {
+    console.log("LOGIN FAILED! res: ", res)
+  }
 
   return (
     <motion.div
@@ -65,7 +76,15 @@ const Login = () => {
           >
             Login
           </button>
-        </form>
+        </form><br></br>
+        <GoogleLogin
+          onSuccess={credentialResponse => {
+            console.log(credentialResponse);
+          }}
+          onError={() => {
+            console.log('Login Failed');
+          }}
+        />;
         <p className="mt-6 text-sm text-gray-300 text-center">
           Don't have an account? <a href="/signup" className="text-blue-500 hover:underline">Sign up</a>
         </p>

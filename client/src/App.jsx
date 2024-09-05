@@ -1,5 +1,5 @@
 // src/App.jsx
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -17,6 +17,7 @@ import axios from "axios";
 import UploadPage from "./pages/UploadPage";
 import ImageGeneration from "./pages/ImageGeneration";
 
+
 const App = () => {
   const [results, setResults] = useState([]);
 
@@ -28,6 +29,8 @@ const App = () => {
       alert("Error fetching results.");
     }
   };
+
+
 
   return (
     <Router>
