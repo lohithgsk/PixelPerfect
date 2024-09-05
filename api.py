@@ -12,16 +12,83 @@ import os
 from dotenv import load_dotenv
 from io import BytesIO
 from models.image_caption import image_captioning_model
+from models.image_duplication import ImageDuplicateChecker
+from models.image_uploader import ImageUploader
+from models.image_search import ImageSearcher
+
+
+# DB initialization
+from datetime import datetime
+from firebase_admin import credentials, initialize_app, storage
+from firebase_admin import firestore
+
 
 load_dotenv()
 
 api_key = os.getenv('API_KEY')
 auth_token = os.getenv('auth_token')
+fire_creds = os.getenv('CREDS')
+bucket_url = os.getenv("BUCKET")
+
+# Initializing firebase
+cred = credentials.Certificate(fire_creds)
+initialize_app(cred, {'storageBucket': bucket_url}) # bucket to store images
+db = firestore.client()
 
 configure(api_key=api_key)
 model = GenerativeModel('gemini-1.5-pro')
 
 app = FastAPI()
+
+@app.post("/upload_image/")
+async def upload_image(file: UploadFile = File(None), url: str = Form(None), summary: str = Form(None), caption: str = Form(None), flags: str = Form(None)):
+    # Check if a file is provided
+    if file:
+        # Read the uploaded file
+        image = Image.open(io.BytesIO(await file.read())).convert('RGB')
+    elif url:
+        # Check if the URL is provided
+        try:
+            response = requests.get(url)
+            response.raise_for_status()
+            image = Image.open(io.BytesIO(response.content)).convert('RGB')
+        except requests.exceptions.RequestException as e:
+            raise HTTPException(status_code=400, detail=f"Error downloading image: {e}")
+        except IOError:
+            raise HTTPException(status_code=400, detail="Invalid image format at URL.")
+    else:
+        raise HTTPException(status_code=400, detail="Either an image file or a URL must be provided.")
+    
+    if "force" not in flags:
+        checker = ImageDuplicateChecker(db)
+        duplicatecheck = checker.check_duplicate(image)
+
+        if duplicatecheck != "No duplicates found":
+            return {'duplicate found at': duplicatecheck}
+    
+    
+    timestamp = datetime.now()
+    image_timestamp = timestamp.strftime("%m%d%Y%H%M%S")
+    
+    # Initialize with a database connection
+    uploader = ImageUploader(db)
+    url = uploader.upload_file(image,image_timestamp)
+    uploader.dbstore(summary,url,timestamp,caption)
+
+    # Return the generated text summary
+    return {"response": "Image uploaded to database successfully"}
+
+
+@app.post("/find_image/")
+async def find_image(prompt: str = Form(None)):
+
+    searcher = ImageSearcher(db, model)
+
+    result = searcher.check_image(prompt)
+    
+    # Return the generated text summary
+    return {"response": result}
+
 
 @app.post("/generate-summary/")
 async def generate_summary(file: UploadFile = File(None), url: str = Form(None)):
