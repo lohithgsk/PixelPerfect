@@ -1,9 +1,10 @@
 // src/components/UploadSection.jsx
-import React, { useState } from 'react';
-import axios from 'axios';
+import React, { useState } from "react";
+import axios from "axios";
 
 const UploadSection = () => {
   const [selectedFile, setSelectedFile] = useState(null);
+  const [summary, setSummary] = useState("");
 
   const handleFileChange = (e) => {
     setSelectedFile(e.target.files[0]);
@@ -11,18 +12,18 @@ const UploadSection = () => {
 
   const handleUpload = async () => {
     if (!selectedFile) {
-      alert('Please select a file to upload.');
+      alert("Please select a file to upload.");
       return;
     }
 
     const formData = new FormData();
-    formData.append('file', selectedFile);
+    formData.append("file", selectedFile);
 
     try {
-      await axios.post('/api/upload', formData);
-      alert('File uploaded successfully!');
+      await axios.post("/api/upload", formData);
+      alert("File uploaded successfully!");
     } catch (error) {
-      alert('Failed to upload file.');
+      alert("Failed to upload file.");
     }
   };
 

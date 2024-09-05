@@ -11,6 +11,7 @@ import base64
 import os
 from dotenv import load_dotenv
 from io import BytesIO
+from models.image_caption import image_captioning_model
 
 load_dotenv()
 
@@ -51,6 +52,28 @@ async def generate_summary(file: UploadFile = File(None), url: str = Form(None))
     response = model.generate_content(prompt, generation_config=generation_config)
 
     return {"summary": response.text}
+
+@app.post("/generate-caption/")
+async def generate_caption(file: UploadFile = File(None), url: str = Form(None)):
+    if file:
+        image = Image.open(io.BytesIO(await file.read()))
+    elif url:
+        try:
+            response = requests.get(url)
+            response.raise_for_status()
+            image = Image.open(io.BytesIO(response.content))
+        except requests.exceptions.RequestException as e:
+            raise HTTPException(status_code=400, detail=f"Error downloading image: {e}")
+        except IOError:
+            raise HTTPException(status_code=400, detail="Invalid image format at URL.")
+    else:
+        raise HTTPException(status_code=400, detail="Either an image file or a URL must be provided.")
+
+    try:
+        caption = image_captioning_model.predict(image)
+        return {"caption": caption}
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=str(e))
 
 app.add_middleware(
     CORSMiddleware,
