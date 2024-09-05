@@ -13,8 +13,9 @@ from dotenv import load_dotenv
 from io import BytesIO
 from models.image_caption import image_captioning_model
 from models.image_duplication import ImageDuplicateChecker
-from models.image_uploader import ImageUploader
 from models.image_search import ImageSearcher
+import numpy
+import cv2
 
 
 # DB initialization
@@ -32,12 +33,69 @@ bucket_url = os.getenv("BUCKET")
 
 cred = credentials.Certificate(fire_creds)
 initialize_app(cred, {'storageBucket': bucket_url}) 
+
 db = firestore.client()
 
 configure(api_key=api_key)
 model = GenerativeModel('gemini-1.5-pro')
 
 app = FastAPI()
+
+def upload_file(upload_file, file_name): # function to upload file into the db and return a url to store in the db
+    bucket = storage.bucket()
+    blob = bucket.blob(file_name) 
+    pil_img = upload_file
+    b = io.BytesIO() 
+    pil_img.save(b, 'jpeg') 
+    pil_img.close() 
+    blob.upload_from_string(b.getvalue(), content_type='image/jpeg')
+    blob.make_public() 
+    return blob.public_url 
+
+
+def dbstore(summary,url,timestamp,caption): # store image data in the database
+    imagedata = {
+        'timestamp': timestamp,
+        'url': url,
+        'summary': summary,
+        'caption': caption
+    }
+    db.collection('images').add(imagedata)
+
+def check_duplicate(upload_file):
+
+    open_cv_image = numpy.array(upload_file)
+    # Convert RGB to BGR
+    og = open_cv_image[:, :, ::-1].copy()
+
+    collection_ref = db.collection("images")
+
+    docs = collection_ref.get()
+    max = {}
+    max_orb = -100
+    max_str = -100
+    for doc in docs:
+        doc = doc.to_dict()
+        response = requests.get(doc['url'])
+        image = Image.open(io.BytesIO(response.content)).convert('RGB')
+        cv_image = numpy.array(image)
+        image = cv_image[:, :, ::-1].copy()
+        image = cv2.resize(image, (og.shape[1], og.shape[0]))
+        checker = ImageDuplicateChecker()
+        ORBsim = checker.orb_sim(og,image)
+        struct_sim = checker.structural_sim(og,image)
+        if ORBsim > max_orb or struct_sim > max_str:
+            max_orb = ORBsim
+            max_str = struct_sim
+
+        if max_orb >= 0.8 or max_str >= 0.8:
+            max = doc
+        
+        if max != {}:
+            return max['url']
+    
+    return "No duplicates found"
+    
 
 @app.post("/upload_image/")
 async def upload_image(file: UploadFile = File(None), url: str = Form(None), summary: str = Form(None), caption: str = Form(None), flags: str = Form(None)):
@@ -70,9 +128,8 @@ async def upload_image(file: UploadFile = File(None), url: str = Form(None), sum
     image_timestamp = timestamp.strftime("%m%d%Y%H%M%S")
     
     # Initialize with a database connection
-    uploader = ImageUploader(db)
-    url = uploader.upload_file(image,image_timestamp)
-    uploader.dbstore(summary,url,timestamp,caption)
+    url = upload_file(image,image_timestamp)
+    dbstore(summary,url,timestamp,caption)
 
     # Return the generated text summary
     return {"response": "Image uploaded to database successfully"}
