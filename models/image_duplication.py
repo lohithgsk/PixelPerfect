@@ -32,7 +32,6 @@ class ImageDuplicateChecker:
 
     def check_duplicate(self, upload_file):
         open_cv_image = np.array(upload_file)
-        # Convert RGB to BGR
         og = open_cv_image[:, :, ::-1].copy()
 
         collection_ref = self.db.collection("images")

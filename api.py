@@ -16,8 +16,6 @@ from models.image_duplication import ImageDuplicateChecker
 from models.image_uploader import ImageUploader
 from models.image_search import ImageSearcher
 
-
-# DB initialization
 from datetime import datetime
 from firebase_admin import credentials, initialize_app, storage
 from firebase_admin import firestore
