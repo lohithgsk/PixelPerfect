@@ -15,8 +15,10 @@
     "@emotion/styled": "^11.13.0",
     "axios": "^1.7.7",
     "framer-motion": "^11.5.2",
+    "gapi-script": "^1.2.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
+    "react-google-login": "^5.2.2",
     "react-router-dom": "^6.26.1",
     "requirements": "^2.0.2"
   },
