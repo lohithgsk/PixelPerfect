@@ -17,8 +17,6 @@ from models.image_search import ImageSearcher
 import numpy
 import cv2
 
-
-# DB initialization
 from datetime import datetime
 from firebase_admin import credentials, initialize_app, storage
 from firebase_admin import firestore
@@ -99,12 +97,11 @@ def check_duplicate(upload_file):
 
 @app.post("/upload_image/")
 async def upload_image(file: UploadFile = File(None), url: str = Form(None), summary: str = Form(None), caption: str = Form(None), flags: str = Form(None)):
-    # Check if a file is provided
+ 
     if file:
-        # Read the uploaded file
+
         image = Image.open(io.BytesIO(await file.read())).convert('RGB')
     elif url:
-        # Check if the URL is provided
         try:
             response = requests.get(url)
             response.raise_for_status()
@@ -131,7 +128,6 @@ async def upload_image(file: UploadFile = File(None), url: str = Form(None), sum
     url = upload_file(image,image_timestamp)
     dbstore(summary,url,timestamp,caption)
 
-    # Return the generated text summary
     return {"response": "Image uploaded to database successfully"}
 
 
@@ -141,8 +137,7 @@ async def find_image(prompt: str = Form(None)):
     searcher = ImageSearcher(db, model)
 
     result = searcher.check_image(prompt)
-    
-    # Return the generated text summary
+
     return {"response": result}
 
 
