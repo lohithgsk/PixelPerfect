@@ -127,16 +127,12 @@ async def upload_image(file: UploadFile = File(None), url: str = Form(None), sum
 
     return {"response": "Image uploaded to database successfully"}
 
-
 @app.post("/find_image/")
 async def find_image(prompt: str = Form(None)):
-
-    searcher = ImageSearcher(db, model)
-
+    print(prompt)
+    searcher = ImageSearcher(db)
     result = searcher.check_image(prompt)
-
     return {"response": result}
-
 
 @app.post("/generate-summary/")
 async def generate_summary(file: UploadFile = File(None), url: str = Form(None)):

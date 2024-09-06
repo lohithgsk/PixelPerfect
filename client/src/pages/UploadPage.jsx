@@ -65,7 +65,7 @@ const UploadSection = () => {
           },
         }
       );
-      setUploadResponse(response.data.response); // Set the upload response message
+      setUploadResponse(response.data.response);
       alert("Image uploaded successfully!");
     } catch (error) {
       setError(
@@ -85,7 +85,7 @@ const UploadSection = () => {
     formData.append("file", selectedFile);
     formData.append("enhance", enhance);
 
-    setLoadingSummary(true); // Set loading state to true
+    setLoadingSummary(true);
 
     try {
       const response = await axios.post(
@@ -110,7 +110,7 @@ const UploadSection = () => {
           (error.response?.data?.message || "Server error")
       );
     } finally {
-      setLoadingSummary(false); // Reset loading state
+      setLoadingSummary(false);
     }
   };
 
@@ -124,7 +124,7 @@ const UploadSection = () => {
     formData.append("file", selectedFile);
     formData.append("enhance", enhance);
 
-    setLoadingCaption(true); // Set loading state to true
+    setLoadingCaption(true);
 
     try {
       const response = await axios.post(
@@ -149,7 +149,7 @@ const UploadSection = () => {
           (error.response?.data?.message || "Server error")
       );
     } finally {
-      setLoadingCaption(false); // Reset loading state
+      setLoadingCaption(false);
     }
   };
 
@@ -166,7 +166,6 @@ const UploadSection = () => {
           align="center"
           justify="space-between"
         >
-          {/* Left Section */}
           <Box flex="1" pr={[0, 4]} mb={[4, 0]}>
             <Heading as="h2" size="lg" mb={4}>
               Upload Photo, Generate Summary or Caption
@@ -226,7 +225,6 @@ const UploadSection = () => {
             )}
           </Box>
 
-          {/* Right Section */}
           <Box flex="1" pl={[0, 4]}>
             {selectedFile && (
               <Box mb={4}>
@@ -243,7 +241,6 @@ const UploadSection = () => {
               </Box>
             )}
 
-            {/* Summary Section */}
             <Box
               mt={6}
               p={4}
@@ -263,7 +260,6 @@ const UploadSection = () => {
               )}
             </Box>
 
-            {/* Caption Section */}
             <Box
               mt={6}
               p={4}

@@ -1,4 +1,3 @@
-// src/App.jsx
 import React, { useState } from "react";
 import {
   BrowserRouter as Router,
@@ -7,9 +6,7 @@ import {
   useLocation,
 } from "react-router-dom";
 import Navbar from "./components/Navbar";
-import UploadSection from "./components/UploadSection";
 import QuerySection from "./components/QuerySection";
-import ResultsSection from "./components/ResultsSection";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
 import "./index.css";
@@ -22,35 +19,45 @@ const App = () => {
 
   const handleQuery = async (query) => {
     try {
-      const response = await axios.get(`/api/search?query=${query}`);
-      setResults(response.data.results);
+      console.log(query);
+      const formData = new FormData();
+      formData.append("prompt", query);
+
+      const response = await axios.post(
+        "http://localhost:8000/find_image/",
+        formData,
+        {
+          headers: { "Content-Type": "multipart/form-data" },
+        }
+      );
+
+      const data = response.data.response;
+      setResults(data);
+      return data;
     } catch (error) {
-      alert("Error fetching results.");
+      alert("Error fetching results: " + error.message);
+      return [];
     }
   };
 
   return (
-    <Router>
-      <div className="App">
-        {location.pathname !== "/login" && <Navbar />}
-        <Routes>
-          <Route
-            path="/"
-            element={
-              <>
-                <QuerySection onQuery={handleQuery} />
-                <ResultsSection results={results} />
-              </>
-            }
-          />
-          <Route path="/upload" element={<UploadPage />}></Route>
-          <Route path="/generate-image" element={<ImageGeneration />}></Route>
-          <Route path="/login" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
-        </Routes>
-      </div>
-    </Router>
+    <div className="App">
+      {location.pathname !== "/login" && <Navbar />}
+      <Routes>
+        <Route path="/" element={<QuerySection onQuery={handleQuery} />} />
+        <Route path="/upload" element={<UploadPage />} />
+        <Route path="/generate-image" element={<ImageGeneration />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/signup" element={<Signup />} />
+      </Routes>
+    </div>
   );
 };
 
-export default App;
+const AppWrapper = () => (
+  <Router>
+    <App />
+  </Router>
+);
+
+export default AppWrapper;
