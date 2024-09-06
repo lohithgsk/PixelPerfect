@@ -44,7 +44,7 @@ const Navbar = () => {
           className="bg-gradient-to-r from-pink-500 to-fuchsia-500  bg-opacity-70 hover:bg-green-600 text-white py-3 px-6 rounded-full shadow-md hover:shadow-xl transform transition-all duration-300 ease-in-out hover:scale-110 text-base backdrop-filter backdrop-blur-md"
           onClick={handleUploadClick}
         >
-          Upload
+          Search
         </button>
         <button
           className="bg-gradient-to-r from-fuchsia-500 to-purple-400 bg-opacity-70 hover:bg-purple-600 text-white py-3 px-6 rounded-full shadow-md hover:shadow-xl transform transition-all duration-300 ease-in-out hover:scale-110 text-base backdrop-filter backdrop-blur-md"
