@@ -70,8 +70,8 @@ def check_duplicate(upload_file):
 
     docs = collection_ref.get()
     max = {}
-    max_orb = -100
-    max_str = -100
+    max_orb = float('-inf')
+    max_str = float('-inf')
     for doc in docs:
         doc = doc.to_dict()
         response = requests.get(doc['url'])
@@ -96,7 +96,7 @@ def check_duplicate(upload_file):
     
 
 @app.post("/upload_image/")
-async def upload_image(file: UploadFile = File(None), url: str = Form(None), summary: str = Form(None), caption: str = Form(None), flags: str = Form(None)):
+async def upload_image(file: UploadFile = File(None), url: str = Form(None), summary: str = Form(None), caption: str = Form(None), flags: str = Form('None')):
  
     if file:
 
@@ -114,12 +114,9 @@ async def upload_image(file: UploadFile = File(None), url: str = Form(None), sum
         raise HTTPException(status_code=400, detail="Either an image file or a URL must be provided.")
     
     if "force" not in flags:
-        checker = ImageDuplicateChecker(db)
-        duplicatecheck = checker.check_duplicate(image)
-
+        duplicatecheck = check_duplicate(image)
         if duplicatecheck != "No duplicates found":
             return {'duplicate found at': duplicatecheck}
-    
     
     timestamp = datetime.now()
     image_timestamp = timestamp.strftime("%m%d%Y%H%M%S")
