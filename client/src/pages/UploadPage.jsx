@@ -1,6 +1,18 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { ChakraProvider, Container, Box, Button, Input, Image, Text, Heading, Flex, SkeletonText, SkeletonCircle } from "@chakra-ui/react";
+import {
+  ChakraProvider,
+  Container,
+  Box,
+  Button,
+  Input,
+  Image,
+  Text,
+  Heading,
+  Flex,
+  SkeletonText,
+  SkeletonCircle,
+} from "@chakra-ui/react";
 
 const UploadSection = () => {
   const [selectedFile, setSelectedFile] = useState(null);
@@ -10,6 +22,7 @@ const UploadSection = () => {
   const [loadingCaption, setLoadingCaption] = useState(false);
   const [enhance, setEnhance] = useState(false);
   const [error, setError] = useState("");
+  const [uploadResponse, setUploadResponse] = useState("");
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -30,15 +43,36 @@ const UploadSection = () => {
     setError("");
   };
 
-  const handleUpload = () => {
+  const handleUpload = async () => {
     if (!selectedFile) {
       alert("Please select a file to upload.");
       return;
     }
 
-    alert(
-      "File uploaded successfully! You can now generate the summary or caption."
-    );
+    const formData = new FormData();
+    formData.append("file", selectedFile);
+    formData.append("summary", summary || "");
+    formData.append("caption", caption || "");
+    formData.append("flags", "None");
+
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/upload_image/",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      setUploadResponse(response.data.response);
+      alert("Image uploaded successfully!");
+    } catch (error) {
+      setError(
+        "Error uploading image: " +
+          (error.response?.data?.detail || "Server error")
+      );
+    }
   };
 
   const handleGenerateSummary = async () => {
@@ -51,7 +85,7 @@ const UploadSection = () => {
     formData.append("file", selectedFile);
     formData.append("enhance", enhance);
 
-    setLoadingSummary(true); // Set loading state to true
+    setLoadingSummary(true);
 
     try {
       const response = await axios.post(
@@ -76,7 +110,7 @@ const UploadSection = () => {
           (error.response?.data?.message || "Server error")
       );
     } finally {
-      setLoadingSummary(false); // Reset loading state
+      setLoadingSummary(false);
     }
   };
 
@@ -90,7 +124,7 @@ const UploadSection = () => {
     formData.append("file", selectedFile);
     formData.append("enhance", enhance);
 
-    setLoadingCaption(true); // Set loading state to true
+    setLoadingCaption(true);
 
     try {
       const response = await axios.post(
@@ -115,7 +149,7 @@ const UploadSection = () => {
           (error.response?.data?.message || "Server error")
       );
     } finally {
-      setLoadingCaption(false); // Reset loading state
+      setLoadingCaption(false);
     }
   };
 
@@ -132,7 +166,6 @@ const UploadSection = () => {
           align="center"
           justify="space-between"
         >
-          {/* Left Section */}
           <Box flex="1" pr={[0, 4]} mb={[4, 0]}>
             <Heading as="h2" size="lg" mb={4}>
               Upload Photo, Generate Summary or Caption
@@ -141,25 +174,57 @@ const UploadSection = () => {
             <Input type="file" onChange={handleFileChange} mb={4} />
 
             <Button colorScheme="blue" onClick={handleUpload} w="full" mb={4}>
-              Upload
+              Upload Image
             </Button>
 
-            <Button colorScheme="yellow" onClick={handleGenerateSummary} w="full" mb={4} isLoading={loadingSummary}>
+            <Button
+              colorScheme="yellow"
+              onClick={handleGenerateSummary}
+              w="full"
+              mb={4}
+              isLoading={loadingSummary}
+            >
               Generate Summary
             </Button>
 
-            <Button colorScheme="green" onClick={handleGenerateCaption} w="full" isLoading={loadingCaption}>
+            <Button
+              colorScheme="green"
+              onClick={handleGenerateCaption}
+              w="full"
+              isLoading={loadingCaption}
+            >
               Generate Caption
             </Button>
 
             {error && (
-              <Box mt={4} p={3} border="1px" borderColor="red.500" color="red.500" rounded="lg" bg="red.50">
+              <Box
+                mt={4}
+                p={3}
+                border="1px"
+                borderColor="red.500"
+                color="red.500"
+                rounded="lg"
+                bg="red.50"
+              >
                 {error}
+              </Box>
+            )}
+
+            {uploadResponse && (
+              <Box
+                mt={4}
+                p={3}
+                border="1px"
+                borderColor="green.500"
+                color="green.500"
+                rounded="lg"
+                bg="green.50"
+              >
+                {uploadResponse}
               </Box>
             )}
           </Box>
 
-          {/* Right Section */}
           <Box flex="1" pl={[0, 4]}>
             {selectedFile && (
               <Box mb={4}>
@@ -176,8 +241,15 @@ const UploadSection = () => {
               </Box>
             )}
 
-            {/* Summary Section */}
-            <Box mt={6} p={4} border="1px" borderColor="yellow.500" rounded="lg" bg="yellow.50" shadow="md">
+            <Box
+              mt={6}
+              p={4}
+              border="1px"
+              borderColor="yellow.500"
+              rounded="lg"
+              bg="yellow.50"
+              shadow="md"
+            >
               <Heading as="h3" size="md" mb={2}>
                 Generated Summary:
               </Heading>
@@ -188,8 +260,15 @@ const UploadSection = () => {
               )}
             </Box>
 
-            {/* Caption Section */}
-            <Box mt={6} p={4} border="1px" borderColor="green.500" rounded="lg" bg="green.50" shadow="md">
+            <Box
+              mt={6}
+              p={4}
+              border="1px"
+              borderColor="green.500"
+              rounded="lg"
+              bg="green.50"
+              shadow="md"
+            >
               <Heading as="h3" size="md" mb={2}>
                 Generated Caption:
               </Heading>
