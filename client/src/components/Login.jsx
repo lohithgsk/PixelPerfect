@@ -22,10 +22,8 @@ const Login = () => {
 
   return (
     <motion.div
-      className="relative min-h-screen flex items-center justify-center bg-cover bg-center px-4 sm:px-6 lg:px-8"
-      style={{
-        backgroundImage: 'url(https://i.pinimg.com/originals/fc/fe/65/fcfe65272f02ca4ee988a7ed0e79c2d1.jpg)',
-      }}
+      className="relative min-h-screen flex items-center justify-center bg-cover bg-center px-4 sm:px-6 lg:px-8 bg-gradient-to-l from-pink-500 via-purple-400 to-blue-400"
+      
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 1 }}

@@ -15,6 +15,7 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useState } from "react";
+import { motion } from 'framer-motion';
 
 const ImageGeneration = () => {
   const [image, setImage] = useState();
@@ -128,112 +129,137 @@ const ImageGeneration = () => {
 
   return (
     <ChakraProvider>
-      <Container maxW="container.xl" py={10}>
-        <Flex direction={{ base: "column", md: "row" }} gap={8}>
-          {/* Left Section */}
-          <Box flex="1">
-            <Heading mb={4}>Image Generation</Heading>
-            <Text className="text-black text-lg m-3 ml-0">
-              Enter a prompt in the input box below to generate a unique image
-              based on your description. Once submitted, the PixelPerfect-AI
-              will create and display the corresponding image in real-time.
-              Explore your creativity and visualize your ideas instantly!
-            </Text>
-            <Text className="m-2 text-md ml-0 text-gray-500">
-              <strong>Note:</strong> Detailed prompts create better images!!
-            </Text>
+  <motion.div
+    className="relative min-h-screen flex items-center justify-center bg-cover bg-center px-4 sm:px-6 lg:px-8 bg-gradient-to-l from-purple-500 via-blue-400 to-violet-400"
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 1 }}
+  >
+    <Container maxW="container.xl" py={5}>
+    <Flex
+  direction={{ base: "column", md: "row" }}
+  gap={4}
+  p={4} // Adds padding to the Flex container
+  bg="rgba(194, 204, 209, 0.1)"
+  borderRadius="xl"
+>
+        {/* Left Section */}
+        <Box flex="1" p={4}> {/* Adds padding to the Box */}
+          <Heading
+            mb={4}
+            bgGradient="linear(to-l, pink.500, purple.400, blue.500)"
+            bgClip="text"
+            size = '2xl'
+            lineHeight="2" 
+          >
+            Image Generation
+          </Heading>
+          <Text className="text-black text-2xl m-4 ml-0">
+            Enter a prompt in the input box below to generate a unique image
+            based on your description. Once submitted, the PixelPerfect-AI
+            will create and display the corresponding image in real-time.
+            Explore your creativity and visualize your ideas instantly!
+          </Text>
+          <Text className="m-2 text-xl ml-0 text-gray-200">
+            <strong>Note:</strong> Detailed prompts create better images!!
+          </Text>
 
-            <Wrap mb={4}>
-              <Input
-                className="bg-slate-700 m-1 ml-0 focus:outline focus:outline-yellow-500 rounded-lg border border-yellow-500"
-                value={prompt}
-                onChange={(e) => setPrompt(e.target.value)}
-                width={"350px"}
-                placeholder="Prompt.."
-              ></Input>
+          <Wrap mb={4} p={2}> {/* Adds padding to Wrap */}
+            <Input
+              className="placeholder-gray-300 bg-slate-700 m-1 ml-0 focus:outline f rounded-lg border  text-lg text-gray-100"
+              value={prompt}
+              onChange={(e) => setPrompt(e.target.value)}
+              width={"450px"}
+              placeholder="Prompt.."
+            />
+            <Button
+              className="mt-1"
+              onClick={() => generate(prompt)}
+              bg='#df72ed'
+              width={"120px"}
+              textColor={"white"}
+            >
+              Generate
+            </Button>
+          </Wrap>
+
+          <Text className="text-xl text-gray-200 ml-0 m-2 mb-6">
+            Max estimated time for generation: 45 secs for all prompts
+          </Text>
+
+          {generatedImage && (
+            <>
               <Button
-                className="mt-1"
-                onClick={() => generate(prompt)}
-                colorScheme={"yellow"}
+                className="mt-4"
+                onClick={handleGenerateSummary}
+                colorScheme={"blue"}
+                mr={2}
               >
-                Generate
+                Generate Summary
               </Button>
-            </Wrap>
-
-            <Text className="text-sm text-gray-500 ml-0 m-2 mb-6">
-              Max estimated time for generation: 45 secs for all prompts
-            </Text>
-
-            {generatedImage && (
-              <>
-                <Button
-                  className="mt-4"
-                  onClick={handleGenerateSummary}
-                  colorScheme={"yellow"}
-                >
-                  Generate Summary
-                </Button>
-                <Button
-                  className="mt-4 ml-4"
-                  onClick={handleGenerateCaption}
-                  colorScheme={"teal"}
-                >
-                  Generate Caption
-                </Button>
-              </>
-            )}
-          </Box>
-
-          <Box flex="1">
-            {loadingImage ? (
-              <Stack>
-                <SkeletonCircle size="12" />
-                <SkeletonText mt="4" noOfLines={4} spacing="4" />
-              </Stack>
-            ) : generatedImage ? (
-              <Image
-                src={`data:image/png;base64,${generatedImage}`}
-                boxShadow="lg"
-                mb={4}
-                borderRadius="md"
-              />
-            ) : null}
-
-            {loadingSummary ? (
-              <Stack mt={4}>
-                <SkeletonCircle size="12" />
-                <SkeletonText mt="4" noOfLines={4} spacing="4" />
-              </Stack>
-            ) : summary ? (
-              <Text
-                className="mt-6 p-4 border border-yellow-500 rounded-lg bg-yellow-50 shadow-md"
-                mb={4}
+              <Button
+                className="mt-4"
+                onClick={handleGenerateCaption}
+                colorScheme={"teal"}
               >
-                <strong>Generated Summary:</strong>
-                <p>{summary}</p>
-              </Text>
-            ) : null}
+                Generate Caption
+              </Button>
+            </>
+          )}
+        </Box>
 
-            {loadingCaption ? (
-              <Stack mt={4}>
-                <SkeletonCircle size="12" />
-                <SkeletonText mt="4" noOfLines={4} spacing="4" />
-              </Stack>
-            ) : caption ? (
-              <Text className="mt-6 p-4 border border-green-500 rounded-lg bg-green-50 shadow-md">
-                <strong>Generated Caption:</strong>
-                <p>{caption}</p>
-              </Text>
-            ) : null}
+        <Box flex="1" p={4}> {/* Adds padding to the right Box */}
+          {loadingImage ? (
+            <Stack>
+              <SkeletonCircle size="12" />
+              <SkeletonText mt="4" noOfLines={4} spacing="4" />
+            </Stack>
+          ) : generatedImage ? (
+            <Image
+              src={`data:image/png;base64,${generatedImage}`}
+              boxShadow="lg"
+              mb={4}
+              borderRadius="md"
+              p={2} // Adds padding to the image
+            />
+          ) : null}
 
-            {error && (
-              <Text color="red.500" mt={4}>
-                {error}
-              </Text>
-            )}
-          </Box>
-        </Flex>
-      </Container>
+          {loadingSummary ? (
+            <Stack mt={4}>
+              <SkeletonCircle size="12" />
+              <SkeletonText mt="4" noOfLines={4} spacing="4" />
+            </Stack>
+          ) : summary ? (
+            <Text
+              className="mt-6 p-4 border border-yellow-500 rounded-lg bg-violet-200 shadow-md bg-opacity-60 text-xl "
+              mb={4}
+            >
+              <strong>Generated Summary:</strong>
+              <p className="text-xl p-2">{summary}</p>
+            </Text>
+          ) : null}
+
+          {loadingCaption ? (
+            <Stack mt={4}>
+              <SkeletonCircle size="12" />
+              <SkeletonText mt="4" noOfLines={4} spacing="4" />
+            </Stack>
+          ) : caption ? (
+            <Text className="mt-6 p-4 border border-green-500 rounded-lg bg-blue-100 bg-opacity-60 shadow-md text-xl">
+              <strong>Generated Caption:</strong>
+              <p className="text-xl p-2">{caption}</p>
+            </Text>
+          ) : null}
+
+          {error && (
+            <Text color="red.500" mt={4}>
+              {error}
+            </Text>
+          )}
+        </Box>
+      </Flex>
+    </Container>
+  </motion.div>
     </ChakraProvider>
   );
 };
