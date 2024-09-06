@@ -51,7 +51,10 @@ const UploadSection = () => {
 
     const formData = new FormData();
     formData.append("file", selectedFile);
-    formData.append("summary", summary || "");
+    formData.append(
+      "summary",
+      summary || "this an example summary for this image"
+    );
     formData.append("caption", caption || "");
     formData.append("flags", "None");
 

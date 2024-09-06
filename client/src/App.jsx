@@ -13,6 +13,7 @@ import "./index.css";
 import axios from "axios";
 import UploadPage from "./pages/UploadPage";
 import ImageGeneration from "./pages/ImageGeneration";
+import AboutPage from "./pages/AboutPage";
 
 const App = () => {
   const [results, setResults] = useState([]);
@@ -44,7 +45,11 @@ const App = () => {
     <div className="App">
       {location.pathname !== "/login" && <Navbar />}
       <Routes>
-        <Route path="/" element={<QuerySection onQuery={handleQuery} />} />
+        <Route path="/" element={<AboutPage />} />
+        <Route
+          path="/search"
+          element={<QuerySection onQuery={handleQuery} />}
+        />
         <Route path="/upload" element={<UploadPage />} />
         <Route path="/generate-image" element={<ImageGeneration />} />
         <Route path="/login" element={<Login />} />
