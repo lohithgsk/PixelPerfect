@@ -38,6 +38,6 @@ class ImageSearcher:
         index = int(found[1][0])
 
         if found[0] == 'True':
-            return [urls[int(index)]]
+            return [urls[int(index) - 1]]
         else:
             return "No matching images found."
