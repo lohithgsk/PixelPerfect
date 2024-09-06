@@ -39,7 +39,7 @@ model = GenerativeModel('gemini-1.5-pro')
 
 app = FastAPI()
 
-def upload_file(upload_file, file_name): # function to upload file into the db and return a url to store in the db
+def upload_file(upload_file, file_name): 
     bucket = storage.bucket()
     blob = bucket.blob(file_name) 
     pil_img = upload_file
@@ -51,7 +51,7 @@ def upload_file(upload_file, file_name): # function to upload file into the db a
     return blob.public_url 
 
 
-def dbstore(summary,url,timestamp,caption): # store image data in the database
+def dbstore(summary,url,timestamp,caption): 
     imagedata = {
         'timestamp': timestamp,
         'url': url,
@@ -63,7 +63,6 @@ def dbstore(summary,url,timestamp,caption): # store image data in the database
 def check_duplicate(upload_file):
 
     open_cv_image = numpy.array(upload_file)
-    # Convert RGB to BGR
     og = open_cv_image[:, :, ::-1].copy()
 
     collection_ref = db.collection("images")
@@ -120,8 +119,7 @@ async def upload_image(file: UploadFile = File(None), url: str = Form(None), sum
     
     timestamp = datetime.now()
     image_timestamp = timestamp.strftime("%m%d%Y%H%M%S")
-    
-    # Initialize with a database connection
+
     url = upload_file(image,image_timestamp)
     dbstore(summary,url,timestamp,caption)
 

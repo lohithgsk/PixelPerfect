@@ -29,7 +29,7 @@ class ImageSearcher:
             urls.append(doc_data['url'])
 
         prompt = [
-            f"I'm giving you a list of summaries for images, as well as an input by the user. Determine which image the user is talking about. Input = {user_input}, Summary = {summaries}. Your response should be True or False, and the summary number from the list of summaries I gave you, depending on whether the user is talking about that image or not."        ]
+            f"I'm giving you a list of summaries for images, as well as an input by the user. Determine which image the user is talking about. Input = {user_input}, Summary = {summaries}. Your response should be either True or False not any other, and the summary number from the list of summaries I gave you, depending on whether the user is talking about that image or not."        ]
         print(user_input)
         response = model.generate_content(prompt, generation_config=generation_config)
         print(response)

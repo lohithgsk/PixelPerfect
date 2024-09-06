@@ -27,6 +27,8 @@ const ImageGeneration = () => {
   const [generatedImage, setGeneratedImage] = useState();
   const [file, setFile] = useState(null);
   const [error, setError] = useState("");
+  const [imageError, setImageError] = useState(false);
+  const [uploadResponse, setUploadResponse] = useState("");
 
   const generate = async (prompt) => {
     if (!prompt || prompt.trim() === "") {
@@ -49,6 +51,45 @@ const ImageGeneration = () => {
     } catch (error) {
       console.error("Error generating image:", error);
       setLoadingImage(false);
+    }
+  };
+
+  const handleUpload = async () => {
+    if (!generatedImage) {
+      setImageError(true);
+      return;
+    }
+
+    try {
+      const response = await fetch(`data:image/png;base64,${generatedImage}`);
+      const blob = await response.blob();
+
+      const formData = new FormData();
+      formData.append("file", blob, "generated_image.png");
+      formData.append(
+        "summary",
+        summary || "this is an example summary for this image"
+      );
+      formData.append("caption", caption || "");
+      formData.append("flags", "None");
+
+      const uploadRes = await axios.post(
+        "http://localhost:8000/upload_image/",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+      setUploadResponse(uploadRes.data.response);
+      setError("");
+      alert("Image uploaded successfully!");
+    } catch (error) {
+      setError(
+        "Error uploading image: " +
+          (error.response?.data?.detail || "Server error")
+      );
     }
   };
 
@@ -166,20 +207,35 @@ const ImageGeneration = () => {
 
             {generatedImage && (
               <>
-                <Button
-                  className="mt-4"
-                  onClick={handleGenerateSummary}
-                  colorScheme={"yellow"}
-                >
-                  Generate Summary
-                </Button>
-                <Button
-                  className="mt-4 ml-4"
-                  onClick={handleGenerateCaption}
-                  colorScheme={"teal"}
-                >
-                  Generate Caption
-                </Button>
+                <Wrap>
+                  <Button
+                    className="mt-4"
+                    onClick={handleGenerateSummary}
+                    colorScheme={"yellow"}
+                  >
+                    Generate Summary
+                  </Button>
+                </Wrap>
+                <Wrap>
+                  <Button
+                    className="mt-8 ml-0"
+                    onClick={handleGenerateCaption}
+                    colorScheme={"teal"}
+                    width={"170px"}
+                  >
+                    Generate Caption
+                  </Button>
+                </Wrap>
+                <Wrap>
+                  <Button
+                    className="mt-8 ml-0"
+                    onClick={handleUpload}
+                    colorScheme={"blue"}
+                    width={"170px"}
+                  >
+                    Upload
+                  </Button>
+                </Wrap>
               </>
             )}
           </Box>
@@ -225,6 +281,16 @@ const ImageGeneration = () => {
                 <p>{caption}</p>
               </Text>
             ) : null}
+
+            {uploadResponse && (
+              <Text
+                className="mt-6 p-4 border border-green-500 rounded-lg bg-green-50 shadow-md"
+                mb={4}
+              >
+                <strong>Success:</strong>
+                <p>{uploadResponse}</p>
+              </Text>
+            )}
 
             {error && (
               <Text color="red.500" mt={4}>
