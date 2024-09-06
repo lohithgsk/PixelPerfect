@@ -176,10 +176,6 @@ const UploadSection = () => {
 
             <Input type="file" onChange={handleFileChange} mb={4} />
 
-            <Button colorScheme="blue" onClick={handleUpload} w="full" mb={4}>
-              Upload Image
-            </Button>
-
             <Button
               colorScheme="yellow"
               onClick={handleGenerateSummary}
@@ -197,6 +193,10 @@ const UploadSection = () => {
               isLoading={loadingCaption}
             >
               Generate Caption
+            </Button>
+
+            <Button colorScheme="blue" onClick={handleUpload} w="full" mb={4}>
+              Upload Image
             </Button>
 
             {error && (
