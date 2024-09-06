@@ -191,6 +191,7 @@ const UploadSection = () => {
               onClick={handleGenerateCaption}
               w="full"
               isLoading={loadingCaption}
+              mb={4}
             >
               Generate Caption
             </Button>
