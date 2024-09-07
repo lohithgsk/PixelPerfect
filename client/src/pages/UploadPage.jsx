@@ -12,6 +12,13 @@ import {
   Flex,
   SkeletonText,
   SkeletonCircle,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
 } from "@chakra-ui/react";
 
 const UploadSection = () => {
@@ -23,6 +30,10 @@ const UploadSection = () => {
   const [enhance, setEnhance] = useState(false);
   const [error, setError] = useState("");
   const [uploadResponse, setUploadResponse] = useState("");
+  const [showDuplicateAlert, setShowDuplicateAlert] = useState(false);
+  const [duplicateImage, setDuplicateImage] = useState("");
+  const [originalImage, setOriginalImage] = useState(null);
+  const [flag, setFlag] = useState("None");
 
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -40,6 +51,7 @@ const UploadSection = () => {
     }
 
     setSelectedFile(file);
+    setOriginalImage(URL.createObjectURL(file));
     setError("");
   };
 
@@ -53,10 +65,10 @@ const UploadSection = () => {
     formData.append("file", selectedFile);
     formData.append(
       "summary",
-      summary || "this an example summary for this image"
+      summary || "This is an example summary for this image"
     );
     formData.append("caption", caption || "");
-    formData.append("flags", "None");
+    formData.append("flags", flag);
 
     try {
       const response = await axios.post(
@@ -68,8 +80,16 @@ const UploadSection = () => {
           },
         }
       );
-      setUploadResponse(response.data.response);
-      alert("Image uploaded successfully!");
+      console.log(response.data);
+
+      if (response.data["duplicate found at"]) {
+        // Set state for duplicate handling
+        setDuplicateImage(response.data["duplicate found at"]);
+        setShowDuplicateAlert(true);
+      } else {
+        setUploadResponse(response.data.response);
+        alert("Image uploaded successfully!");
+      }
     } catch (error) {
       setError(
         "Error uploading image: " +
@@ -156,6 +176,18 @@ const UploadSection = () => {
     }
   };
 
+  const handleUploadAnyways = async () => {
+    setFlag("force");
+    await handleUpload();
+    setShowDuplicateAlert(false);
+  };
+
+  const handleDecline = () => {
+    setShowDuplicateAlert(false);
+    setSelectedFile(null);
+    window.location.reload();
+  };
+
   return (
     <ChakraProvider>
       <Container maxW="container.lg" p={5}>
@@ -230,10 +262,10 @@ const UploadSection = () => {
           </Box>
 
           <Box flex="1" pl={[0, 4]}>
-            {selectedFile && (
+            {originalImage && (
               <Box mb={4}>
                 <Image
-                  src={URL.createObjectURL(selectedFile)}
+                  src={originalImage}
                   alt="Selected"
                   maxW="full"
                   h="auto"
@@ -287,6 +319,58 @@ const UploadSection = () => {
             </Box>
           </Box>
         </Flex>
+
+        <Modal
+          isOpen={showDuplicateAlert}
+          onClose={() => setShowDuplicateAlert(false)}
+        >
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Duplicate Detected</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <Text>
+                A duplicate image was detected. Do you want to upload it anyway?
+              </Text>
+              <Text className="mt-2 mb-1">
+                Dulpicate Image in the database:
+              </Text>
+              {duplicateImage && (
+                <Image
+                  src={duplicateImage}
+                  alt="Duplicate Image"
+                  maxW="full"
+                  h="auto"
+                  mt={4}
+                  border="1px"
+                  borderColor="gray.300"
+                  rounded="lg"
+                />
+              )}
+              <Text className="mt-2 mb-1">Selected image:</Text>
+              {originalImage && (
+                <Image
+                  src={originalImage}
+                  alt="Original Image"
+                  maxW="full"
+                  h="auto"
+                  mt={4}
+                  border="1px"
+                  borderColor="gray.300"
+                  rounded="lg"
+                />
+              )}
+            </ModalBody>
+            <ModalFooter>
+              <Button colorScheme="blue" onClick={handleUploadAnyways} mr={3}>
+                Upload Anyways
+              </Button>
+              <Button onClick={handleDecline} colorScheme="red">
+                Decline
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
       </Container>
     </ChakraProvider>
   );

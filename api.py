@@ -61,36 +61,40 @@ def dbstore(summary,url,timestamp,caption):
     db.collection('images').add(imagedata)
 
 def check_duplicate(upload_file):
-
     open_cv_image = numpy.array(upload_file)
     og = open_cv_image[:, :, ::-1].copy()
 
     collection_ref = db.collection("images")
-
     docs = collection_ref.get()
-    max = {}
+
     max_orb = float('-inf')
     max_str = float('-inf')
+    max_doc = None
+
     for doc in docs:
-        doc = doc.to_dict()
-        response = requests.get(doc['url'])
+        doc_data = doc.to_dict()
+        response = requests.get(doc_data['url'])
         image = Image.open(io.BytesIO(response.content)).convert('RGB')
         cv_image = numpy.array(image)
-        image = cv_image[:, :, ::-1].copy()
-        image = cv2.resize(image, (og.shape[1], og.shape[0]))
+        cv_image = cv_image[:, :, ::-1].copy()
+        cv_image = cv2.resize(cv_image, (og.shape[1], og.shape[0]))
+
         checker = ImageDuplicateChecker()
-        ORBsim = checker.orb_sim(og,image)
-        struct_sim = checker.structural_sim(og,image)
+        ORBsim = checker.orb_sim(og, cv_image)
+        struct_sim = checker.structural_sim(og, cv_image)
+
+        print(f"Comparing with {doc_data['url']} - ORB similarity: {ORBsim}, Structural similarity: {struct_sim}")
+
         if ORBsim > max_orb or struct_sim > max_str:
             max_orb = ORBsim
             max_str = struct_sim
+            max_doc = doc_data
 
-        if max_orb >= 0.8 or max_str >= 0.8:
-            max = doc
-        
-        if max != {}:
-            return max['url']
+    if max_orb >= 0.8 or max_str >= 0.8:
+        print(f"Duplicate found: {max_doc['url']}")
+        return max_doc['url']
     
+    print("No duplicates found")
     return "No duplicates found"
     
 
