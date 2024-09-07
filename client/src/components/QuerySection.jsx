@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { motion } from "framer-motion";
+
 const QuerySection = ({ onQuery }) => {
   const [query, setQuery] = useState("");
   const [results, setResults] = useState([]);
@@ -22,68 +23,122 @@ const QuerySection = ({ onQuery }) => {
   };
 
   return (
-      <div className="min-h-screen bg-cover bg-top px-4 sm:px-6 lg:px-8 bg-gradient-to-l from-pink-500 via-purple-400 to-blue-400">
+    <div className="min-h-screen bg-cover bg-top px-4 sm:px-6 lg:px-8 bg-gradient-to-l from-pink-500 via-purple-400 to-blue-400 flex items-center justify-center">
+      {/* Main Container */}
+      <div
+        className="relative h-auto w-full max-w-7xl p-8 rounded-2xl shadow-2xl transition-transform duration-1000 bg-clip-padding backdrop-filter backdrop-blur-sm border border-gray-100"
+        style={{ backgroundColor: "rgba(252, 247, 247, 0.9)" }}
+      >
         {/* Search Section */}
-        <div className="max-w-5xl mx-auto py-8">
+        <div className="py-8">
           {/* Search Heading */}
-          <h2 className="text-3xl
-           
-           font-semibold text-white mb-6 text-center">
+          <h2 className="text-3xl font-semibold bg-gradient-to-l from-pink-500 via-purple-600 to-blue-500 bg-clip-text text-transparent mb-6 text-center">
             Search Photos
           </h2>
-  
+
           {/* Search Box */}
-          <div className="flex w-full max-w-lg mb-6 mx-auto bg-white rounded-lg shadow-lg overflow-hidden">
+          <div className="relative w-full max-w-lg mb-6 mx-auto">
             <input
               type="text"
               value={query}
               onChange={(e) => setQuery(e.target.value)}
               placeholder="Enter your query"
-              className="flex-1 p-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="w-full p-4 pr-20 bg-gray-100 rounded-lg shadow-sm focus:outline-black transition duration-300 ease-in-out"
+              style={{
+                border: "none",
+              }}
             />
             <button
               onClick={handleQuery}
-              className="bg-blue-500 hover:bg-blue-600 text-white py-3 px-6 focus:outline-none focus:ring-2 focus:ring-blue-400"
+              className="absolute right-0 top-0 bottom-0 bg-blue-500 text-white py-3 px-6 rounded-r-lg focus:outline-black transition duration-300 ease-in-out"
             >
               Search
             </button>
           </div>
-  
+
           {/* Results Section */}
           <motion.div
-            className="flex flex-col items-center"
+            className={`flex flex-col items-center gap-8`}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 1 }}
           >
             {/* Results Heading */}
-            <h2 className="text-2xl font-semibold text-white mb-4 text-center">
+            <h2 className="text-2xl font-semibold bg-gradient-to-l from-pink-500 via-purple-600 to-blue-500 bg-clip-text text-transparent mb-4 text-center">
               Results
             </h2>
-  
+
             {/* Results Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+            <div className="w-full px-4 sm:px-8"> {/* Added padding here */}
               {results.length > 0 ? (
-                results.map((url, index) => (
-                  <div
-                    key={index}
-                    className="bg-gray-100 p-2 rounded-lg overflow-hidden shadow-md cursor-pointer transition-transform transform hover:scale-105"
-                    onClick={() => handleImageClick(url)}
-                  >
-                    <img
-                      src={url}
-                      alt="Search result"
-                      className="w-full h-48 object-cover rounded"
-                    />
+                results.length === 1 ? (
+                  <div className="flex justify-center w-full">
+                    <div
+                      className="relative w-80 h-80 bg-gray-100 p-2 rounded-lg overflow-hidden shadow-md transition-transform transform hover:scale-105"
+                      style={{
+                        borderImage: "linear-gradient(to left, pink, purple, blue) 1",
+                        borderWidth: "4px",
+                        borderStyle: "solid",
+                      }}
+                      onClick={() => handleImageClick(results[0])}
+                    >
+                      <img
+                        src={results[0]}
+                        alt="Search result"
+                        className="w-full h-full object-cover rounded"
+                      />
+                    </div>
                   </div>
-                ))
+                ) : results.length === 2 ? (
+                  <div className="flex justify-center gap-8"> {/* Increased gap */}
+                    {results.map((url, index) => (
+                      <div
+                        key={index}
+                        className="relative w-80 h-80 bg-gray-100 p-2 rounded-lg overflow-hidden shadow-md transition-transform transform hover:scale-105"
+                        style={{
+                          borderImage: "linear-gradient(to left, pink, purple, blue) 1",
+                          borderWidth: "4px",
+                          borderStyle: "solid",
+                        }}
+                        onClick={() => handleImageClick(url)}
+                      >
+                        <img
+                          src={url}
+                          alt="Search result"
+                          className="w-full h-full object-cover rounded"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8"> {/* Increased gap */}
+                    {results.map((url, index) => (
+                      <div
+                        key={index}
+                        className="relative w-80 h-80 bg-gray-100 p-2 rounded-lg overflow-hidden shadow-md transition-transform transform hover:scale-105"
+                        style={{
+                          borderImage: "linear-gradient(to left, pink, purple, blue) 1",
+                          borderWidth: "4px",
+                          borderStyle: "solid",
+                        }}
+                        onClick={() => handleImageClick(url)}
+                      >
+                        <img
+                          src={url}
+                          alt="Search result"
+                          className="w-full h-full object-cover rounded"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                )
               ) : (
-                <p className="text-gray-200 col-span-full">No results found.</p>
+                <p className="text-gray-500 col-span-full text-center">No results found.</p>
               )}
             </div>
           </motion.div>
         </div>
-  
+
         {/* Full Screen Modal */}
         {selectedImage && (
           <div
@@ -98,6 +153,8 @@ const QuerySection = ({ onQuery }) => {
           </div>
         )}
       </div>
-    );
-  };
+    </div>
+  );
+};
+
 export default QuerySection;
