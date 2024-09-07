@@ -31,10 +31,8 @@ const Signup = () => {
 
   return (
     <motion.div
-      className="relative min-h-screen flex items-center justify-center bg-cover bg-center px-4 sm:px-6 lg:px-8"
-      style={{
-        backgroundImage: 'url(https://i.pinimg.com/originals/fc/fe/65/fcfe65272f02ca4ee988a7ed0e79c2d1.jpg)',
-      }}
+      className="relative min-h-screen flex items-center justify-center bg-cover bg-center bg-gradient-to-r from-purple-500 via-blue-400 to-violet-400 px-4 sm:px-6 lg:px-8"
+      
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 1 }}

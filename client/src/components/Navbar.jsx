@@ -23,7 +23,7 @@ const Navbar = () => {
     navigate("/search");
   };
   return (
-    <nav className="relative flex justify-between items-center px-8 py-4 bg-gradient-to-r from-gray-800 via-gray-900 to-gray-800 text-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 ease-in-out overflow-hidden backdrop-filter backdrop-blur-lg bg-opacity-60">
+    <nav className="relative flex justify-between items-center px-8 py-4 bg-gradient-to-r from-gray-800 via-gray-900 to-gray-800 text-white  shadow-lg hover:shadow-2xl transition-all duration-300 ease-in-out overflow-hidden backdrop-filter backdrop-blur-lg bg-opacity-60">
       {/* Decorative Streak Lines */}
       <div className="absolute inset-0 pointer-events-none">
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-900 to-transparent opacity-20 animate-pulse" />
