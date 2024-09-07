@@ -171,7 +171,7 @@ const ImageGeneration = () => {
   return (
     <ChakraProvider>
   <motion.div
-    className="relative min-h-screen flex items-center justify-center bg-cover bg-center px-4 sm:px-6 lg:px-8 bg-gradient-to-l from-purple-500 via-blue-400 to-violet-400"
+    className="relative min-h-screen flex items-center justify-center bg-cover bg-center px-4 sm:px-6 lg:px-8 bg-gradient-to-l from-purple-600 via-blue-400 to-violet-500"
     initial={{ opacity: 0 }}
     animate={{ opacity: 1 }}
     transition={{ duration: 1 }}
@@ -181,34 +181,35 @@ const ImageGeneration = () => {
   direction={{ base: "column", md: "row" }}
   gap={4}
   p={4} // Adds padding to the Flex container
-  bg="rgba(194, 204, 209, 0.1)"
+  bg="rgba(240, 233, 233, 0.8)"
   borderRadius="xl"
 >
         {/* Left Section */}
         <Box flex="1" p={4}> {/* Adds padding to the Box */}
           <Heading
             mb={4}
-            bgGradient="linear(to-l, pink.600, purple.500, blue.600)"
+            bgGradient="linear(to-l, pink.500, purple.500, blue.500)"
             bgClip="text"
             size = '2xl'
             lineHeight="2" 
           >
             Image Generation
           </Heading>
-          <Text className="text-black text-2xl m-4 ml-0">
+          <Text className="text-black text-2xl text-justify m-4 ml-0">
             Enter a prompt in the input box below to generate a unique image
             based on your description. Once submitted, the PixelPerfect-AI
             will create and display the corresponding image in real-time.
             Explore your creativity and visualize your ideas instantly!
           </Text>
-          <Text className="m-2 text-xl ml-0 text-gray-200">
+          <Text className="m-2 text-xl ml-0 text-gray-500">
             <strong>Note:</strong> Detailed prompts create better images!!
           </Text>
 
-          <Wrap mb={4} p={2}> {/* Adds padding to Wrap */}
+          <Wrap mb={4} p={0}> {/* Adds padding to Wrap */}
             <Input
-              className="placeholder-gray-300 bg-slate-700 m-1 ml-0 focus:outline f rounded-lg border  text-lg text-gray-100"
+              className="placeholder-gray-500 bg-slate-700 m-1 ml-0 focus:outline-none rounded-lg border border-black text-lg text-gray-900"
               value={prompt}
+              borderColor="black"
               onChange={(e) => setPrompt(e.target.value)}
               width={"450px"}
               placeholder="Prompt.."
@@ -224,7 +225,7 @@ const ImageGeneration = () => {
             </Button>
           </Wrap>
 
-          <Text className="text-xl text-gray-200 ml-0 m-2 mb-6">
+          <Text className="text-m text-gray-500 ml-0 m-2 mb-6">
             Max estimated time for generation: 45 secs for all prompts
           </Text>
 
@@ -296,7 +297,7 @@ const ImageGeneration = () => {
             </Stack>
           ) : summary ? (
             <Text
-              className="mt-6 p-4 border border-yellow-500 rounded-lg bg-violet-200 shadow-md bg-opacity-60 text-xl "
+              className="mt-6 p-4 border border-yellow-600 rounded-lg bg-violet-400 shadow-md bg-opacity-80 text-xl "
               mb={4}
             >
               <strong>Generated Summary:</strong>
