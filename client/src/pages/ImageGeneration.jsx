@@ -277,6 +277,15 @@ const ImageGeneration = () => {
             <Box flex="1" p={4}>
               {" "}
               {/* Adds padding to the right Box */}
+              <Heading
+                mb={4}
+                bgGradient="linear(to-l, pink.600, purple.500, blue.600)"
+                bgClip="text"
+                size="2xl"
+                lineHeight="2"
+              >
+                Generated Image:
+              </Heading>
               {loadingImage ? (
                 <Stack>
                   <SkeletonCircle size="12" />
