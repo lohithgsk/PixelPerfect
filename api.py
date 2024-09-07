@@ -159,7 +159,7 @@ async def generate_summary(file: UploadFile = File(None), url: str = Form(None))
 
     prompt = [
         image,
-        "Use simpler words and let it be like human written so it will be useful for searching it. Generate a detailed summary of at least 40 words based on this image content. Your response will be stored as a summary of the description of the image. This summary will be used to search and find the image associated with your response."
+        "Use simpler words and let it be like human written so it will be useful for searching it. Generate a detailed summary of at least 55 words and max words be 110 based on this image content. Your response will be stored as a summary of the description of the image. This summary will be used to search and find the image associated with your response."
     ]
 
     response = model.generate_content(prompt, generation_config=generation_config)

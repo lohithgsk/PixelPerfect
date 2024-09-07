@@ -15,7 +15,7 @@ import {
 } from "@chakra-ui/react";
 import axios from "axios";
 import { useState } from "react";
-import { motion } from 'framer-motion';
+import { motion } from "framer-motion";
 
 const ImageGeneration = () => {
   const [image, setImage] = useState();
