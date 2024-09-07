@@ -33,6 +33,8 @@ const UploadSection = () => {
   const [showDuplicateAlert, setShowDuplicateAlert] = useState(false);
   const [duplicateImage, setDuplicateImage] = useState("");
   const [originalImage, setOriginalImage] = useState(null);
+  const [enhancedImage, setEnhancedImage] = useState(null);
+  const [showEnhanceModal, setShowEnhanceModal] = useState(false);
   const [flag, setFlag] = useState("None");
 
   const handleFileChange = (e) => {
@@ -83,7 +85,6 @@ const UploadSection = () => {
       console.log(response.data);
 
       if (response.data["duplicate found at"]) {
-        // Set state for duplicate handling
         setDuplicateImage(response.data["duplicate found at"]);
         setShowDuplicateAlert(true);
       } else {
@@ -176,6 +177,48 @@ const UploadSection = () => {
     }
   };
 
+  const handleEnhance = async () => {
+    if (!selectedFile) {
+      alert("Please select a file to enhance.");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", selectedFile);
+
+    try {
+      const response = await axios.post(
+        "http://localhost:8000/enhance_image/",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          responseType: "arraybuffer", // Ensure binary data is correctly handled
+        }
+      );
+
+      // Check if the response is a valid image
+      if (response.status === 200 && response.data) {
+        const blob = new Blob([response.data], { type: "image/png" });
+        const imageUrl = URL.createObjectURL(blob);
+        setEnhancedImage(imageUrl);
+        setShowEnhanceModal(true);
+      } else {
+        setError(
+          "Failed to enhance image. Server response status: " + response.status
+        );
+      }
+    } catch (error) {
+      console.error("Error enhancing image:", error);
+      setError(
+        "Error enhancing image: " +
+          (error.response?.data?.message || "Server error")
+      );
+    }
+    setError("");
+  };
+
   const handleUploadAnyways = async () => {
     setFlag("force");
     await handleUpload();
@@ -186,6 +229,13 @@ const UploadSection = () => {
     setShowDuplicateAlert(false);
     setSelectedFile(null);
     window.location.reload();
+  };
+  const handleReplaceImage = () => {
+    if (enhancedImage) {
+      setOriginalImage(enhancedImage);
+      setEnhancedImage(null);
+      setShowEnhanceModal(false);
+    }
   };
 
   return (
@@ -207,7 +257,14 @@ const UploadSection = () => {
             </Heading>
 
             <Input type="file" onChange={handleFileChange} mb={4} />
-
+            <Button
+              colorScheme={"purple"}
+              mb={4}
+              w={"full"}
+              onClick={handleEnhance}
+            >
+              Enhance
+            </Button>
             <Button
               colorScheme="yellow"
               onClick={handleGenerateSummary}
@@ -320,65 +377,122 @@ const UploadSection = () => {
           </Box>
         </Flex>
 
-        <Modal
-          isOpen={showDuplicateAlert}
-          onClose={() => setShowDuplicateAlert(false)}
-        >
-          <ModalOverlay />
-          <ModalContent maxW="6xl" minH="600px">
-            <ModalHeader>Duplicate Detected</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>
-              <Text mb={4}>
-                A duplicate image was detected. Do you want to upload it anyway?
+        {showDuplicateAlert && (
+          <Modal
+            isOpen={showDuplicateAlert}
+            onClose={() => setShowDuplicateAlert(false)}
+          >
+            <ModalOverlay />
+            <ModalContent maxW="60vw" maxH="90vh">
+              <ModalHeader>Duplicate Image Found</ModalHeader>
+              <Text ml={6} className="text-black text-lg">
+                There is a duplicate image found already in the database. Do you
+                want to upload any way?
               </Text>
-              <Text mb={2}>Duplicate Image in the database:</Text>
-              <Flex
-                direction="row"
-                justify="space-between"
-                align="center"
-                mb={4}
-              >
-                {duplicateImage && (
-                  <Box flex="1" mr={4} h="400px" overflow="hidden">
-                    <Image
-                      src={duplicateImage}
-                      alt="Duplicate Image"
-                      objectFit="cover"
-                      maxW="full"
-                      h="full"
-                      border="1px"
-                      borderColor="gray.300"
-                      rounded="lg"
-                    />
-                  </Box>
-                )}
-                {originalImage && (
-                  <Box flex="1" ml={4} h="400px" overflow="hidden">
-                    <Image
-                      src={originalImage}
-                      alt="Original Image"
-                      objectFit="cover"
-                      maxW="full"
-                      h="full"
-                      border="1px"
-                      borderColor="gray.300"
-                      rounded="lg"
-                    />
-                  </Box>
-                )}
-              </Flex>
-            </ModalBody>
-            <ModalFooter>
-              <Button colorScheme="blue" onClick={handleUploadAnyways} mr={3}>
-                Upload Anyways
-              </Button>
-              <Button onClick={handleDecline} colorScheme="red">
-                Decline
-              </Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
+              <ModalCloseButton />
+              <ModalBody>
+                <Flex direction="row" align="center" justify="space-between">
+                  {originalImage && (
+                    <Box flex="1" mr={0} ml={20}>
+                      <Text fontSize="lg" fontWeight="bold" mb={2}>
+                        Original Image:
+                      </Text>
+                      <Image
+                        src={originalImage}
+                        alt="Original"
+                        boxSize="400px"
+                        objectFit="cover"
+                        borderRadius="md"
+                        mb={4}
+                      />
+                    </Box>
+                  )}
+                  {duplicateImage && (
+                    <Box flex="1" ml={0}>
+                      <Text fontSize="lg" fontWeight="bold" mb={2}>
+                        Duplicate Image:
+                      </Text>
+                      <Image
+                        src={duplicateImage}
+                        alt="Duplicate"
+                        boxSize="400px"
+                        objectFit="cover"
+                        borderRadius="md"
+                        mb={4}
+                      />
+                    </Box>
+                  )}
+                </Flex>
+              </ModalBody>
+              <ModalFooter>
+                <Button colorScheme="blue" onClick={handleUploadAnyways}>
+                  Upload Anyways
+                </Button>
+                <Button colorScheme="red" onClick={handleDecline} ml={3}>
+                  Decline
+                </Button>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
+        )}
+
+        {showEnhanceModal && (
+          <Modal
+            isOpen={showEnhanceModal}
+            onClose={() => setShowEnhanceModal(false)}
+          >
+            <ModalOverlay />
+            <ModalContent maxW="60vw" maxH="90vh">
+              <ModalHeader>Enhanced Image</ModalHeader>
+              <ModalCloseButton />
+              <ModalBody>
+                <Flex direction="row" align="center" justify="space-between">
+                  {originalImage && (
+                    <Box flex="1" mr={0} ml={20}>
+                      <Text fontSize="lg" fontWeight="bold" mb={2}>
+                        Original Image:
+                      </Text>
+                      <Image
+                        src={originalImage}
+                        alt="Original"
+                        boxSize="400px"
+                        objectFit="cover"
+                        borderRadius="md"
+                        mb={4}
+                      />
+                    </Box>
+                  )}
+                  {enhancedImage && (
+                    <Box flex="1" ml={0}>
+                      <Text fontSize="lg" fontWeight="bold" mb={2}>
+                        Enhanced Image:
+                      </Text>
+                      <Image
+                        src={enhancedImage}
+                        alt="Enhanced"
+                        boxSize="400px" // Adjust as needed
+                        objectFit="cover"
+                        borderRadius="md"
+                        mb={4}
+                      />
+                    </Box>
+                  )}
+                </Flex>
+              </ModalBody>
+              <ModalFooter>
+                <Button colorScheme="green" onClick={handleReplaceImage} mr={3}>
+                  Replace
+                </Button>
+                <Button
+                  colorScheme="blue"
+                  onClick={() => setShowEnhanceModal(false)}
+                >
+                  Decline
+                </Button>
+              </ModalFooter>
+            </ModalContent>
+          </Modal>
+        )}
       </Container>
     </ChakraProvider>
   );

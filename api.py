@@ -16,7 +16,7 @@ from models.image_duplication import ImageDuplicateChecker
 from models.image_search import ImageSearcher
 import numpy
 import cv2
-
+import numpy as np
 from datetime import datetime
 from firebase_admin import credentials, initialize_app, storage
 from firebase_admin import firestore
@@ -135,6 +135,26 @@ async def find_image(prompt: str = Form(None)):
     searcher = ImageSearcher(db)
     result = searcher.check_image(prompt)
     return {"response": result}
+
+@app.post("/enhance_image/")
+async def enhance_image(file: UploadFile = File(None)):
+    if not file:
+        raise HTTPException(status_code=400, detail="No image file provided.")
+
+    image = Image.open(io.BytesIO(await file.read()))
+    open_cv_image = np.array(image)
+
+    gaussian_blur = cv2.GaussianBlur(open_cv_image, (7, 7), 2)
+
+    sharpened2 = cv2.addWeighted(open_cv_image, 3.5, gaussian_blur, -2.5, 0)
+
+    sharpened2_pil = Image.fromarray(sharpened2)
+    
+    buffer = BytesIO()
+    sharpened2_pil.save(buffer, format='PNG')
+    buffer.seek(0)
+    
+    return Response(content=buffer.getvalue(), media_type='image/png')
 
 @app.post("/generate-summary/")
 async def generate_summary(file: UploadFile = File(None), url: str = Form(None)):
