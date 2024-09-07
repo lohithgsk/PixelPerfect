@@ -325,41 +325,49 @@ const UploadSection = () => {
           onClose={() => setShowDuplicateAlert(false)}
         >
           <ModalOverlay />
-          <ModalContent>
+          <ModalContent maxW="6xl" minH="600px">
             <ModalHeader>Duplicate Detected</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              <Text>
+              <Text mb={4}>
                 A duplicate image was detected. Do you want to upload it anyway?
               </Text>
-              <Text className="mt-2 mb-1">
-                Dulpicate Image in the database:
-              </Text>
-              {duplicateImage && (
-                <Image
-                  src={duplicateImage}
-                  alt="Duplicate Image"
-                  maxW="full"
-                  h="auto"
-                  mt={4}
-                  border="1px"
-                  borderColor="gray.300"
-                  rounded="lg"
-                />
-              )}
-              <Text className="mt-2 mb-1">Selected image:</Text>
-              {originalImage && (
-                <Image
-                  src={originalImage}
-                  alt="Original Image"
-                  maxW="full"
-                  h="auto"
-                  mt={4}
-                  border="1px"
-                  borderColor="gray.300"
-                  rounded="lg"
-                />
-              )}
+              <Text mb={2}>Duplicate Image in the database:</Text>
+              <Flex
+                direction="row"
+                justify="space-between"
+                align="center"
+                mb={4}
+              >
+                {duplicateImage && (
+                  <Box flex="1" mr={4} h="400px" overflow="hidden">
+                    <Image
+                      src={duplicateImage}
+                      alt="Duplicate Image"
+                      objectFit="cover"
+                      maxW="full"
+                      h="full"
+                      border="1px"
+                      borderColor="gray.300"
+                      rounded="lg"
+                    />
+                  </Box>
+                )}
+                {originalImage && (
+                  <Box flex="1" ml={4} h="400px" overflow="hidden">
+                    <Image
+                      src={originalImage}
+                      alt="Original Image"
+                      objectFit="cover"
+                      maxW="full"
+                      h="full"
+                      border="1px"
+                      borderColor="gray.300"
+                      rounded="lg"
+                    />
+                  </Box>
+                )}
+              </Flex>
             </ModalBody>
             <ModalFooter>
               <Button colorScheme="blue" onClick={handleUploadAnyways} mr={3}>
