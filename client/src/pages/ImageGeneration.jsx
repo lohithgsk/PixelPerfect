@@ -188,7 +188,7 @@ const ImageGeneration = () => {
         <Box flex="1" p={4}> {/* Adds padding to the Box */}
           <Heading
             mb={4}
-            bgGradient="linear(to-l, pink.500, purple.400, blue.500)"
+            bgGradient="linear(to-l, pink.600, purple.500, blue.600)"
             bgClip="text"
             size = '2xl'
             lineHeight="2" 
@@ -232,19 +232,20 @@ const ImageGeneration = () => {
               <>
               <Wrap>
                 <Button
-                  className="mt-4"
+                  className="mt-4 ml-0"
+                  width={"200px"}
                   onClick={handleGenerateSummary}
                   colorScheme={"blue"}
                 >
                   Generate Summary
                 </Button>
-                </Wrap>
-                <Wrap>
+                
+              
                 <Button
                   className="mt-4 ml-4"
                   onClick={handleGenerateCaption}
                   colorScheme={"teal"}
-                  width= {"170px"}
+                  width= {"200px"}
                 >
                   Generate Caption
                 </Button>
@@ -259,6 +260,15 @@ const ImageGeneration = () => {
                     Upload
                   </Button>
                 </Wrap>
+                {uploadResponse && (
+              <Text
+                className="mt-6 p-4 border border-green-500 rounded-lg bg-green-50 shadow-md"
+                mb={4}
+              >
+                <strong>Success:</strong>
+                <p>{uploadResponse}</p>
+              </Text>
+            )}
               </>
             )}
           </Box>
@@ -306,16 +316,7 @@ const ImageGeneration = () => {
             </Text>
           ) : null}
 
-            {uploadResponse && (
-              <Text
-                className="mt-6 p-4 border border-green-500 rounded-lg bg-green-50 shadow-md"
-                mb={4}
-              >
-                <strong>Success:</strong>
-                <p>{uploadResponse}</p>
-              </Text>
-            )}
-
+           
           {error && (
             <Text color="red.500" mt={4}>
               {error}
