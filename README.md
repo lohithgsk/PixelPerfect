@@ -28,19 +28,19 @@ npm run dev
 ```
 
 ## All Our Features
-![Home](https://github.com/Saminathan-77/Ideathon_2024/blob/main/img/home.jpg)
+![Home](https://github.com/Saminathan-77/Ideathon_2024/blob/main/img/home.jpeg)
 
-![Login](https://github.com/Saminathan-77/Ideathon_2024/blob/main/img/login.jpg)
+![Login](https://github.com/Saminathan-77/Ideathon_2024/blob/main/img/login.jpeg)
 
-![Upload](https://github.com/Saminathan-77/Ideathon_2024/blob/main/img/upload.jpg)
+![Upload](https://github.com/Saminathan-77/Ideathon_2024/blob/main/img/upload.jpeg)
 
-![Enhance](https://github.com/Saminathan-77/Ideathon_2024/blob/main/img/enhance.jpg)
+![Enhance](https://github.com/Saminathan-77/Ideathon_2024/blob/main/img/enhance.jpeg)
 
-![Duplicate](https://github.com/Saminathan-77/Ideathon_2024/blob/main/img/duplicate.jpg)
+![Duplicate](https://github.com/Saminathan-77/Ideathon_2024/blob/main/img/duplicate.jpeg)
 
-![Generate](https://github.com/Saminathan-77/Ideathon_2024/blob/main/img/generate.jpg)
+![Generate](https://github.com/Saminathan-77/Ideathon_2024/blob/main/img/generate.jpeg)
 
-![Search](https://github.com/Saminathan-77/Ideathon_2024/blob/main/img/search.jpg)
+![Search](https://github.com/Saminathan-77/Ideathon_2024/blob/main/img/search.jpeg)
 
 ## Feedback
 Please reach out to us if you find any issues.
