@@ -11,6 +11,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 import { motion } from 'framer-motion';
+
 const AboutPage = () => {
   const handleLearnMore = () => {
     // Placeholder for a learn more button, e.g., scrolling down or routing
@@ -61,11 +62,14 @@ const AboutPage = () => {
             </Box>
             <Box flex="1" mt={[8, 0]}>
               <Image
-                src="https://i.pinimg.com/236x/37/f6/61/37f661c10de323861ae6761cf3f6a7d6.jpg"
+                src="/logo.jpg"
                 alt="About Us"
                 borderRadius="lg"
                 shadow="lg"
-                maxW="100%"
+                maxW="70%"
+                maxH="80%"
+                // align={"right"}
+                ml={"110px"}
               />
             </Box>
           </Flex>
