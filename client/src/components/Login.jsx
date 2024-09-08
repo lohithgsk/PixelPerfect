@@ -12,8 +12,8 @@ const Login = () => {
     e.preventDefault();
 
     try {
-      const response = await axios.post('/api/login', { email, password });
-      alert('Login successful!');
+      // const response = await axios.post('/api/login', { email, password });
+      // alert('Login successful!');
       navigate('/');
     } catch (error) {
       alert('Login failed. Please check your credentials.');
