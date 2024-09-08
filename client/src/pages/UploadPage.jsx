@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import axios from "axios";
-import { motion } from 'framer-motion';
+import { motion, px } from 'framer-motion';
 import {
   ChakraProvider,
   Container,
@@ -249,56 +249,73 @@ const UploadSection = () => {
       >
         <Container maxW="container.xl" py={5}>
           <Flex
-            direction={{ base: "column", md: "row" }}
+            direction={{ base: "column", md: originalImage ? "row" : "column" }}
+            alignItems={originalImage ? "flex-start" : "center"}
             gap={4}
-            p={4} // Adds padding to the Flex container
+            p={4}
             bg="rgba(252, 247, 247, 0.9)"
             borderRadius="xl"
           >
-            <Box flex="1" p={5}>
+            {/* Main Form Section */}
+            <Box
+              flex="1"
+              p={5}
+              alignSelf={originalImage ? "flex-start" : "center"} // Align left when image is present
+              textAlign={originalImage ? "left" : "center"} // Center align the text initially
+              transition="all 0.5s ease"
+            >
               <Heading
                 mb={4}
                 bgGradient="linear(to-l, pink.500, purple.500, blue.500)"
                 bgClip="text"
-                size='2xl'
+                size="2xl"
                 lineHeight="1.25"
               >
-                Upload Photo, Generate summary, or caption
+                Summarize and Upload
               </Heading>
 
               <Input type="file" onChange={handleFileChange} mb={4} />
-              <Button
-                colorScheme={"purple"}
-                mb={4}
-                w={"full"}
-                onClick={handleEnhance}
-              >
+              <Button colorScheme={"purple"} w={"full"} onClick={handleEnhance}>
                 Enhance
               </Button>
-              <Button
-                colorScheme="yellow"
-                onClick={handleGenerateSummary}
-                w="full"
-                mb={4}
-                isLoading={loadingSummary}
-              >
-                Generate Summary
-              </Button>
+              <p className="text-gray-600 mb py-2 text-justify">
+                TIP: Use Enhance only for unclear photos to get better results
+              </p>
+              <Flex>
+                <Button
+                  colorScheme="yellow"
+                  onClick={handleGenerateSummary}
+                  w="280px"
+                  mb={4}
+                  mt={2}
+                  isLoading={loadingSummary}
+                >
+                  Generate Summary
+                </Button>
+
+                <Button
+                  colorScheme="green"
+                  onClick={handleGenerateCaption}
+                  w="280px"
+                  ml="11px"
+                  isLoading={loadingCaption}
+                  mb={4}
+                  mt={2}
+                >
+                  Generate Caption
+                </Button>
+              </Flex>
 
               <Button
-                colorScheme="green"
-                onClick={handleGenerateCaption}
+                colorScheme="blue"
+                onClick={handleUpload}
                 w="full"
-                isLoading={loadingCaption}
                 mb={4}
               >
-                Generate Caption
-              </Button>
-
-              <Button colorScheme="blue" onClick={handleUpload} w="full" mb={4}>
                 Upload Image
               </Button>
 
+              {/* Error and Response Messages */}
               {error && (
                 <Box
                   mt={4}
@@ -328,8 +345,9 @@ const UploadSection = () => {
               )}
             </Box>
 
-            <Box flex="1" pl={[0, 4]}>
-              {originalImage && (
+            {/* Image and Generated Texts Section */}
+            {originalImage && (
+              <Box flex="1" pl={[0, 4]} transition="all 0.5s ease">
                 <Box mb={4}>
                   <Image
                     src={originalImage}
@@ -342,34 +360,32 @@ const UploadSection = () => {
                     shadow="md"
                   />
                 </Box>
-              )}
 
+                {loadingSummary ? (
+                  <SkeletonText noOfLines={4} spacing="4" />
+                ) : (
+                  <Text
+                    className="mt-6 p-4 border border-violet-600 rounded-lg bg-violet-400 shadow-md bg-opacity-20 text-xl "
+                    mb={4}
+                  >
+                    <strong>Generated Summary:</strong>
+                    <p className="text-xl p-2">{summary}</p>
+                  </Text>
+                )}
 
-              {loadingSummary ? (
-                <SkeletonText noOfLines={4} spacing="4" />
-              ) : (
-                <Text
-                  className="mt-6 p-4 border border-violet-600 rounded-lg bg-violet-400 shadow-md bg-opacity-20 text-xl "
-                  mb={4}
-                >
-                  <strong>Generated Summary:</strong>
-                  <p className="text-xl p-2">{summary}</p>
-                </Text>
-              )}
-
-
-              {loadingCaption ? (
-                <>
-                  <SkeletonCircle size="12" />
-                  <SkeletonText noOfLines={2} spacing="4" mt={4} />
-                </>
-              ) : (
-                <Text className="mt-6 p-4 border border-green-500 rounded-lg bg-blue-100 bg-opacity-60 shadow-md text-xl">
-                  <strong>Generated Caption:</strong>
-                  <p className="text-xl p-2">{caption}</p>
-                </Text>
-              )}
-            </Box>
+                {loadingCaption ? (
+                  <>
+                    <SkeletonCircle size="12" />
+                    <SkeletonText noOfLines={2} spacing="4" mt={4} />
+                  </>
+                ) : (
+                  <Text className="mt-6 p-4 border border-green-500 rounded-lg bg-blue-100 bg-opacity-60 shadow-md text-xl">
+                    <strong>Generated Caption:</strong>
+                    <p className="text-xl p-2">{caption}</p>
+                  </Text>
+                )}
+              </Box>
+            )}
           </Flex>
 
           {showDuplicateAlert && (
