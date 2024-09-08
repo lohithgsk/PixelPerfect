@@ -71,7 +71,7 @@ const QuerySection = ({ onQuery }) => {
               <button
                 onClick={handleClearQuery}
                 style={{ outline: "none" }}
-                className="bg-red-500 text-white py-3 px-6 rounded-r-lg transition duration-300 ease-in-out"
+                className="bg-red-500 text-white py-3 px-6 rounded-r-lg rounded-l-lg transition duration-300 ease-in-out"
               >
                 Clear
               </button>

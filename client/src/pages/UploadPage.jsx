@@ -36,6 +36,7 @@ const UploadSection = () => {
   const [originalImage, setOriginalImage] = useState(null);
   const [enhancedImage, setEnhancedImage] = useState(null);
   const [showEnhanceModal, setShowEnhanceModal] = useState(false);
+  const [enhancedImageText,setEnhancedImageText] = useState(false);
   const [flag, setFlag] = useState("None");
 
   const handleFileChange = (e) => {
@@ -52,7 +53,7 @@ const UploadSection = () => {
       setSelectedFile(null);
       return;
     }
-
+    setEnhancedImageText(false);
     setSelectedFile(file);
     setOriginalImage(URL.createObjectURL(file));
     setError("");
@@ -236,6 +237,7 @@ const UploadSection = () => {
       setOriginalImage(enhancedImage);
       setEnhancedImage(null);
       setShowEnhanceModal(false);
+      setEnhancedImageText(true);
     }
   };
 
@@ -283,12 +285,13 @@ const UploadSection = () => {
               </p>
               <Flex>
                 <Button
-                  colorScheme="yellow"
+                  colorScheme="blue"
                   onClick={handleGenerateSummary}
                   w="280px"
                   mb={4}
                   mt={2}
                   isLoading={loadingSummary}
+                  
                 >
                   Generate Summary
                 </Button>
@@ -307,10 +310,11 @@ const UploadSection = () => {
               </Flex>
 
               <Button
-                colorScheme="blue"
+                colorScheme="pink"
                 onClick={handleUpload}
                 w="full"
                 mb={4}
+               variant="outline"
               >
                 Upload Image
               </Button>
@@ -348,6 +352,19 @@ const UploadSection = () => {
             {/* Image and Generated Texts Section */}
             {originalImage && (
               <Box flex="1" pl={[0, 4]} transition="all 0.5s ease">
+                {enhancedImageText ? (
+                  <Heading mt={1} mb={2}
+                  bgGradient="linear(to-r, pink.500, purple.500, blue.500)"
+                  bgClip="text"
+                  size="2xl"
+                  lineHeight="2" >Enhanced Image</Heading>
+                ):(
+                <Heading mt={1} mb={2}
+                bgGradient="linear(to-r, pink.500, purple.500, blue.500)"
+                bgClip="text"
+                size="2xl"
+                lineHeight="2">Uploaded Image</Heading>
+                )}
                 <Box mb={4}>
                   <Image
                     src={originalImage}
@@ -358,6 +375,7 @@ const UploadSection = () => {
                     borderColor="gray.300"
                     rounded="lg"
                     shadow="md"
+
                   />
                 </Box>
 
