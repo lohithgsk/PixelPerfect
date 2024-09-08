@@ -28,18 +28,26 @@ npm run dev
 ```
 
 ## All Our Features
+
+### Home Page
 ![Home](https://github.com/Saminathan-77/Ideathon_2024/blob/main/img/home.jpeg)
 
+### Login Page
 ![Login](https://github.com/Saminathan-77/Ideathon_2024/blob/main/img/login.jpeg)
 
+### Upload Page
 ![Upload](https://github.com/Saminathan-77/Ideathon_2024/blob/main/img/upload.jpeg)
 
+### Enhacing Image
 ![Enhance](https://github.com/Saminathan-77/Ideathon_2024/blob/main/img/enhance.jpeg)
 
+### Duplicate Image
 ![Duplicate](https://github.com/Saminathan-77/Ideathon_2024/blob/main/img/duplicate.jpeg)
 
+### Generation Page
 ![Generate](https://github.com/Saminathan-77/Ideathon_2024/blob/main/img/generate.jpeg)
 
+### Search Page
 ![Search](https://github.com/Saminathan-77/Ideathon_2024/blob/main/img/search.jpeg)
 
 ## Feedback
