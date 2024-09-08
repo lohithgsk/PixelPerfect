@@ -13,12 +13,34 @@ PixelPerfect leverages a range of powerful AI models to provide an enhanced imag
 ## Usage
 Install the required packages to run the web application.
 ```shell
+cd client
 npm install
+
+cd ..
+pip install -r requirements.txt
+
+pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 ```
 Start the application
 ```shell
+cd client
 npm run dev
 ```
+
+## All Our Features
+![Home](https://github.com/Saminathan-77/Ideathon_2024/blob/main/img/[home.jpg])
+
+![Login](https://github.com/Saminathan-77/Ideathon_2024/blob/main/img/[login.jpg])
+
+![Upload](https://github.com/Saminathan-77/Ideathon_2024/blob/main/img/[upload.jpg])
+
+![Enhance](https://github.com/Saminathan-77/Ideathon_2024/blob/main/img/[enhance.jpg])
+
+![Duplicate](https://github.com/Saminathan-77/Ideathon_2024/blob/main/img/[duplicate.jpg])
+
+![Generate](https://github.com/Saminathan-77/Ideathon_2024/blob/main/img/[generate.jpg])
+
+![Search](https://github.com/Saminathan-77/Ideathon_2024/blob/main/img/[search.jpg])
 
 ## Feedback
 Please reach out to us if you find any issues.
