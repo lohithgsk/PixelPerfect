@@ -8,7 +8,7 @@ PixelPerfect is a cutting-edge AI-powered image processing application designed 
 
 PixelPerfect leverages a range of powerful AI models to provide an enhanced image processing experience. Using the Gemini API, the app creates image summaries and captions through a Hugging Face model, generating detailed and context-aware descriptions of images. For image enhancement, PixelPerfect implements the ESRGAN (Enhanced Super-Resolution Generative Adversarial Network) model, allowing users to upscale and improve image quality with incredible sharpness and detail retention. Additionally, PixelPerfect uses Stable Diffusion for high-quality image generation, offering users the ability to create stunning visuals from text inputs or modify existing images with AI-driven creativity.
 
-![Architecture](https://github.com/lohithgsk/PixelPerfect/blob/main/architectiure.png)
+![Architecture](https://github.com/Saminathan-77/Ideathon_2024/blob/main/img/Architecture.jpeg)
 
 ## Usage
 Install the required packages to run the web application.
@@ -53,5 +53,5 @@ npm run dev
 ![Search](https://github.com/Saminathan-77/Ideathon_2024/blob/main/img/search.jpeg)
 
 ## Feedback
-Please reach out to us if you find any issues.
+Please reach out if you find any issues.
 
