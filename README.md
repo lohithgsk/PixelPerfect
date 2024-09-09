@@ -23,6 +23,8 @@ pip3 install torch torchvision torchaudio --index-url https://download.pytorch.o
 ```
 Start the application
 ```shell
+uvicorn api:app --reload
+
 cd client
 npm run dev
 ```
