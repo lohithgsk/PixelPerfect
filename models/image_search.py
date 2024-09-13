@@ -43,7 +43,7 @@ class ImageSearcher:
             {
             "role": "user",
             "parts": [
-                "Your task is that when you are given a user input and a list of image summaries, identify which images the user is referring to.\n\n            user_input: The input provided by the user describing the images they are referring to.\n            summaries: A list of summaries, each representing a different image.\n\n            Output:\n            A list of booleans [True, False, True, False...] where each element corresponds to whether the user is talking about the image corresponding to that summary, understand the summary well and the user's intent. (True for yes, False for no). \n\n            Your response should only contain this list of booleans, with no additional text or explanation.",
+                "Your task is that when you are given a user input and a list of image summaries, identify which images the user is referring to.\n\n            user_input: The input provided by the user describing the images they are referring to.\n            summaries: A list of summaries, each representing a different image.\n\n            Output:\n            A list of booleans [True, False, True, False...] where each element corresponds to whether the user is talking about the image corresponding to that summary, understand the summary well and the user's intent. (True for yes, False for no). \n\n            Your response should only contain this list of booleans, with no additional text or explanation. You should give a very accurate answer and it should work all prompts, only the images should be 'True' if the context of the image and the summary matches",
             ],
             },
             {
