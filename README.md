@@ -11,21 +11,38 @@ PixelPerfect leverages a range of powerful AI models to provide an enhanced imag
 ![Architecture](https://github.com/Saminathan-77/Ideathon_2024/blob/main/img/Architecture.jpeg)
 
 ## Usage
-Install the required packages to run the web application.
+Create the project directory.
+```shell
+mkdir pixelperfect
+```
+Move in to the project directory.
 ```shell
 cd client
+```
+Install the required packages for the react application.
+```
 npm install
-
-cd ..
+```
+Install the required packages for the model.
+```
 pip install -r requirements.txt
+```
 
+Install the appropriate torch version.
+```
 pip3 install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
 ```
+
 Start the application
 ```shell
 uvicorn api:app --reload
+```
 
+```shell
 cd client
+```
+
+```shell
 npm run dev
 ```
 
